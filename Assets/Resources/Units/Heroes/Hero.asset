@@ -1,0 +1,16 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68fae4be73f86eb4f98c840e2a1c6593, type: 3}
+  m_Name: Hero
+  m_EditorClassIdentifier: 
+  Faction: 0
+  UnitPrefab: {fileID: 7144511092023199249, guid: a40c6aa59825fbe45afb343ac2bbc1e3, type: 3}

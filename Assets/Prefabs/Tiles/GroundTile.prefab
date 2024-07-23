@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &3282745270207613805
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_Name
+      value: GroundTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: -6954842919840259289}
+  m_SourcePrefab: {fileID: 100100000, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+--- !u!1 &919609049641869601 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 3282745270207613805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &2818244235503404941 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 761897088000232672, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 3282745270207613805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &7069325247445159575 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 3282745270207613805}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &-6954842919840259289
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7069325247445159575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2aeb6706354d1c84ba27f9afc1cf6132, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _primaryColor: {r: 0.6076874, g: 0.754717, b: 0.18155926, a: 1}
+  _secondaryColor: {r: 0.579264, g: 0.7264151, b: 0.16104485, a: 1}
+  _spriteRenderer: {fileID: 2818244235503404941}
+  _highlight: {fileID: 919609049641869601}
+  _isWalkable: 1
+  OccupiedUnit: {fileID: 0}
+  TileName: Grass

@@ -1,0 +1,96 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1001 &7552827859381544913
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_Name
+      value: WallTile
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8077212590667884268, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 57426435696402620}
+  m_SourcePrefab: {fileID: 100100000, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+--- !u!1 &2829639758662509099 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 7552827859381544913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &57426435696402620
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2829639758662509099}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8dcd866397175a04fad14df42a91124a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _primaryColor: {r: 0.4433962, g: 0.4433962, b: 0.4433962, a: 1}
+  _secondaryColor: {r: 0.44313726, g: 0.44313726, b: 0.44313726, a: 1}
+  _spriteRenderer: {fileID: 7080720427008715569}
+  _highlight: {fileID: 5304312421260627357}
+  _isWalkable: 0
+  OccupiedUnit: {fileID: 0}
+  TileName: Wall
+--- !u!1 &5304312421260627357 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 7552827859381544913}
+  m_PrefabAsset: {fileID: 0}
+--- !u!212 &7080720427008715569 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 761897088000232672, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 7552827859381544913}
+  m_PrefabAsset: {fileID: 0}
