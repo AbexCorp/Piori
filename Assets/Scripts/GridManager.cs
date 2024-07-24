@@ -48,16 +48,12 @@ public class GridManager : MonoBehaviour
 
         _cameraPosition.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
 
-        GameManager.Instance.ChangeState(GameState.SpawnHeroes);
+        //GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
     public Tile GetHeroSpawnTile()
     {
-        return _tiles.Where(t => t.Key.x < _width / 2 && t.Value.Walkable).OrderBy(t => Random.value).First().Value;
-    }
-    public Tile GetEnemySpawnTile()
-    {
-        return _tiles.Where(t => t.Key.x > _width / 2 && t.Value.Walkable).OrderBy(t => Random.value).First().Value;
+        return _tiles.Where(t => t.Key.x < _width / 2 && t.Value.IsWalkable).OrderBy(t => Random.value).First().Value;
     }
 
     public Tile GetTileAtPosition(Vector2 position)

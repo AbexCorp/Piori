@@ -17,34 +17,20 @@ public class UnitManager : MonoBehaviour
         _units = Resources.LoadAll<ScriptableUnit>("Units").ToList(); //Load all sunits from resource folder
     }
 
-    public void SpawnHeroes()
-    {
-        var heroCount = 1;
-        for(int i = 0; i < heroCount; i++)
-        {
-            var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
-            var randomSpawnedHero = Instantiate(randomPrefab);
-            var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
+    //public void SpawnHeroes()
+    //{
+    //    var heroCount = 1;
+    //    for(int i = 0; i < heroCount; i++)
+    //    {
+    //        var randomPrefab = GetRandomUnit<BaseHero>(Faction.Hero);
+    //        var randomSpawnedHero = Instantiate(randomPrefab);
+    //        var randomSpawnTile = GridManager.Instance.GetHeroSpawnTile();
 
-            randomSpawnTile.SetUnit(randomSpawnedHero);
-        }
+    //        randomSpawnTile.SetUnit(randomSpawnedHero);
+    //    }
 
-        GameManager.Instance.ChangeState(GameState.SpawnEnemies);
-    }
-    public void SpawnEnemies()
-    {
-        var enemyCount = 1;
-        for(int i = 0; i < enemyCount; i++)
-        {
-            var randomPrefab = GetRandomUnit<BaseEnemy>(Faction.Enemy);
-            var randomSpawnedEnemy = Instantiate(randomPrefab);
-            var randomSpawnTile = GridManager.Instance.GetEnemySpawnTile();
-
-            randomSpawnTile.SetUnit(randomSpawnedEnemy);
-        }
-
-        GameManager.Instance.ChangeState(GameState.HeroesTurn);
-    }
+    //    //GameManager.Instance.ChangeState(GameState.SpawnEnemies);
+    //}
 
     private T GetRandomUnit<T>(Faction faction) where T : BaseUnit
     {

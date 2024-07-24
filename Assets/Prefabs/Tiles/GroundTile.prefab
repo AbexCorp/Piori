@@ -87,10 +87,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2aeb6706354d1c84ba27f9afc1cf6132, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _primaryColor: {r: 0.6076874, g: 0.754717, b: 0.18155926, a: 1}
-  _secondaryColor: {r: 0.579264, g: 0.7264151, b: 0.16104485, a: 1}
   _spriteRenderer: {fileID: 2818244235503404941}
   _highlight: {fileID: 919609049641869601}
-  _isWalkable: 1
+  ScriptableTile: {fileID: 11400000, guid: 33e117207250b404d95b96d2ad6d500a, type: 2}
   OccupiedUnit: {fileID: 0}
   TileName: Grass
+  _isWalkable: 1

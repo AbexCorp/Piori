@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-        ChangeState(GameState.GenerateGrid);
+        ChangeState(GameState.PrepareGame);
     }
 
     public void ChangeState(GameState newState)
@@ -29,18 +29,16 @@ public class GameManager : MonoBehaviour
 
         switch (newState)
         {
-            case GameState.GenerateGrid:
+            case GameState.PrepareGame:
                 GridManager.Instance.GenerateGrid();
                 break;
-            case GameState.SpawnHeroes:
-                UnitManager.Instance.SpawnHeroes();
+            case GameState.StartPhase:
                 break;
-            case GameState.SpawnEnemies:
-                UnitManager.Instance.SpawnEnemies();
+            case GameState.BattlePhase:
                 break;
-            case GameState.HeroesTurn:
+            case GameState.BuyPhase:
                 break;
-            case GameState.EnemiesTurn:
+            case GameState.Ending:
                 break;
             
         }
@@ -49,9 +47,9 @@ public class GameManager : MonoBehaviour
 
 public enum GameState
 {
-    GenerateGrid = 0,
-    SpawnHeroes = 1,
-    SpawnEnemies = 2,
-    HeroesTurn = 3,
-    EnemiesTurn = 4,
+    PrepareGame = 0,
+    StartPhase = 1,
+    BattlePhase = 2,
+    BuyPhase = 3,
+    Ending = 4,
 }

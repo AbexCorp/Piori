@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,8 +12,12 @@ public class MenuManager : MonoBehaviour
     private GameObject _selectedHeroObject;
     [SerializeField]
     private GameObject _tileObject;
+
     [SerializeField]
-    private GameObject _unitObject;
+    private GameObject _tower1Button;
+    [SerializeField]
+    private GameObject _clearTowerButton;
+    public BaseTower _selectedTowerToBuy;
 
     private void Awake()
     {
@@ -35,17 +40,19 @@ public class MenuManager : MonoBehaviour
         if(tile == null)
         {
             _tileObject.SetActive(false);
-            _unitObject.SetActive(false);
             return;
         }
 
-        _tileObject.GetComponentInChildren<Text>().text = tile.TileName;
+        _tileObject.GetComponentInChildren<Text>().text = tile.ScriptableTile.TileName;
         _tileObject.SetActive(true);
+    }
 
-        if(tile.OccupiedUnit)
-        {
-            _unitObject.GetComponentInChildren<Text>().text = tile.OccupiedUnit.UnitName;
-            _unitObject.SetActive(true);
-        }
+    public void SelectTower()
+    {
+        _selectedTowerToBuy = Resources.LoadAll<ScriptableTower>("Towers").ToList().FirstOrDefault().TowerPrefab;
+    }
+    public void ClearTower()
+    {
+        _selectedTowerToBuy = null;
     }
 }
