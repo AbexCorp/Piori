@@ -17,3 +17,4 @@ MonoBehaviour:
   UpgradesTo: []
   TowerType: 0
   TowerTier: 0
+  TowerName: TempTower

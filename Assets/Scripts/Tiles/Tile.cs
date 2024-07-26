@@ -72,45 +72,23 @@ public abstract class Tile : MonoBehaviour
     {
         //if (GameManager.Instance.GameState != GameState.BuyPhase)
         //    return;
-        if (OccuppyingTower != null)
-            return;
-        if (MenuManager.Instance._selectedTowerToBuy == null)
-            return;
-        if (IsBuildable)
+        if(TowerManager.Instance.IsSelling == true) //Selling
         {
-            BuildTower(MenuManager.Instance._selectedTowerToBuy);
+            if (IsBuildable || OccuppyingTower == null)
+                return;
+
+            OccuppyingTower.OccupiedTile = null;
+            Destroy(OccuppyingTower.gameObject);
+            OccuppyingTower = null;
+            MenuManager.Instance.StopSelling();
+        }
+        else if(TowerManager.Instance.SelectedTowerPrefabToBuy != null) //Building
+        {
+            if (OccuppyingTower != null || !IsBuildable)
+                return;
+
+            BuildTower(TowerManager.Instance.SelectedTowerPrefabToBuy);
             MenuManager.Instance.ClearTower();
         }
     }
-    //private void OnMouseDown()
-    //{
-    //    if (GameManager.Instance.GameState != GameState.BuyPhase)
-    //        return;
-
-    //    if(OccupiedUnit != null) //Something exists on clicked tile
-    //    {
-    //        if (OccupiedUnit.Faction == Faction.Hero) //Something clicked is a hero
-    //            UnitManager.Instance.SetSelectedHero((BaseHero)OccupiedUnit);
-    //        else //Its an enemy
-    //        {
-    //            if (UnitManager.Instance.SelectedHero != null) //If you have hero selected already then kill
-    //            {
-    //                var enemy = (BaseEnemy)OccupiedUnit;
-    //                Destroy(enemy.gameObject);
-    //                UnitManager.Instance.SetSelectedHero(null);
-    //            }
-    //        }
-    //    }
-    //    else //Nothing is on tile
-    //    {
-    //        if(UnitManager.Instance.SelectedHero != null) //But already have hero selected then move
-    //        {
-    //            if (IsWalkable) //Not a wall
-    //            {
-    //                SetUnit(UnitManager.Instance.SelectedHero);
-    //                UnitManager.Instance.SetSelectedHero(null);
-    //            }
-    //        }
-    //    }
-    //}
 }

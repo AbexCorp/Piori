@@ -15,6 +15,8 @@ public class ScriptableTower : ScriptableObject
 
     //public bool ShootsProjectile;
     //public Projectile ProjectilePrefab
+
+    public string TowerName = "Tower name is null";
 }
 
 
