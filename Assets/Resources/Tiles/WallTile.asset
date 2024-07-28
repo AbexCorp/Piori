@@ -17,3 +17,5 @@ MonoBehaviour:
   IsWalkable: 0
   IsBuildable: 0
   BlocksBullets: 1
+  TileType: 2
+  TileColor: {r: 0.4811321, g: 0.47794062, b: 0.44708973, a: 1}

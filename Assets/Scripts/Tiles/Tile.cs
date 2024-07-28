@@ -17,6 +17,7 @@ public abstract class Tile : MonoBehaviour
 
 
     //Code References
+    [HideInInspector]
     public BaseTower OccuppyingTower;
 
 
@@ -25,11 +26,8 @@ public abstract class Tile : MonoBehaviour
     public bool IsWalkable => ScriptableTile.IsWalkable && OccuppyingTower == null;
     public bool IsBuildable => ScriptableTile.IsBuildable && OccuppyingTower == null;
     public bool BlocksBullets => ScriptableTile.BlocksBullets;
-
-
-    [SerializeField]
-    protected bool _isWalkable;
-
+    public TileType TileType => ScriptableTile.TileType;
+    public Color TileColor => ScriptableTile.TileColor;
 
 
 

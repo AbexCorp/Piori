@@ -16,39 +16,76 @@ public class GridManager : MonoBehaviour
     private Transform _cameraPosition;
 
     //<<<Tiles>>>
-    [SerializeField]
-    private Tile _groundTile;
-    [SerializeField]
-    private Tile _wallTile;
-
+    private Dictionary<TileType, ScriptableTile> _scriptedTiles = new();
     private Dictionary<Vector2, Tile> _tiles;
 
     private void Awake()
     {
         Instance = this;
+        LoadTiles();
+        layout = Resources.LoadAll<GridLayoutScript>("GridLayouts").ToList().FirstOrDefault();
+    }
+
+    private void LoadTiles()
+    {
+        List<ScriptableTile> tiles = Resources.LoadAll<ScriptableTile>("Tiles").ToList();
+        foreach(var tile in tiles)
+        {
+            if (_scriptedTiles.ContainsKey(tile.TileType))
+                continue;
+            _scriptedTiles[tile.TileType] = tile;
+        }
+    }
+    private Tile GetPrefabForTileType(TileType tileType)
+    {
+        _scriptedTiles.TryGetValue(tileType, out ScriptableTile tile);
+        if (tile == null)
+            return null;
+        return tile.TilePrefab;
     }
 
 
-    public void GenerateGrid()
+    GridLayoutScript layout; /////////////////////////////////// REEEEEEEEEEMOVVVVVVVVE THISSSSSSSS
+    public void Gener(GridLayoutScript layout)
     {
         _tiles = new Dictionary<Vector2, Tile>();
-        for(int x = 0; x < _width; x++)
+        for(int x = 0; x < layout.Width; x++)
         {
-            for(int y = 0; y < _height; y++)
+            for(int y = 0; y < layout.Height; y++)
             {
-                var randomTile = Random.Range(0, 6) == 3 ? _wallTile : _groundTile;
-                var createdTile = Instantiate(randomTile, new Vector3(x,y), Quaternion.identity);
+                Tile createdTile = Instantiate(GetPrefabForTileType(layout.tiles[((y*layout.Width)) +x]), new Vector3(x,y), Quaternion.identity);
                 createdTile.name = $"Tile {x} {y}";
 
-                createdTile.Init(x, y);
+                createdTile.Init(x,y);
 
-                _tiles[new Vector2(x, y)] = createdTile;
+                _tiles[new Vector2(x,y)] = createdTile;
             }
         }
 
-        _cameraPosition.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
+        _cameraPosition.transform.position = new Vector3((float)layout.Width / 2 - 0.5f, (float)layout.Width / 2 - 0.5f, -10);
+    }
 
-        //GameManager.Instance.ChangeState(GameState.SpawnHeroes);
+    public void GenerateGrid()
+    {
+        Gener(layout);
+        //_tiles = new Dictionary<Vector2, Tile>();
+        //for(int x = 0; x < _width; x++)
+        //{
+        //    for(int y = 0; y < _height; y++)
+        //    {
+        //        var randomTile = Random.Range(0, 6) == 3 ? _wallTile : _groundTile;
+        //        var createdTile = Instantiate(randomTile, new Vector3(x,y), Quaternion.identity);
+        //        createdTile.name = $"Tile {x} {y}";
+
+        //        createdTile.Init(x, y);
+
+        //        _tiles[new Vector2(x, y)] = createdTile;
+        //    }
+        //}
+
+        //_cameraPosition.transform.position = new Vector3((float)_width / 2 - 0.5f, (float)_height / 2 - 0.5f, -10);
+
+        ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
     public Tile GetHeroSpawnTile()
