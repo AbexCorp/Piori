@@ -12,17 +12,13 @@ public class GridManager : MonoBehaviour
 
     //Inspector References
     [SerializeField]
-    private Transform _cameraPosition;
+    private Camera _camera;
 
     //Code References
     [HideInInspector]
     public GridLayoutScript LoadedMap;
 
     //Fields & Properties
-    [SerializeField]
-    private int _width;
-    [SerializeField]
-    private int _height;
 
 
 
@@ -73,7 +69,8 @@ public class GridManager : MonoBehaviour
             }
         }
 
-        _cameraPosition.transform.position = new Vector3((float)layout.Width / 2 - 0.5f, (float)layout.Height / 2 - 0.5f, -10);
+        _camera.transform.position = new Vector3((float)layout.Width / 2 - 0.5f, (float)layout.Height / 2 - 0.5f, -10);
+        _camera.orthographicSize = layout.Width >= layout.Height ? layout.Height / 2 : layout.Width / 2;
         LoadedMap = layout;
     }
 

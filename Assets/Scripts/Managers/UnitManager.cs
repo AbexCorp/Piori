@@ -9,7 +9,7 @@ public class UnitManager : MonoBehaviour
 
     private List<ScriptableUnit> _units;
 
-    public BaseHero SelectedHero;
+    //public BaseHero SelectedHero;
 
     private void Awake()
     {
