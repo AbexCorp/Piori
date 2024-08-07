@@ -31,6 +31,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.PrepareGame:
                 GridManager.Instance.GenerateGrid();
+                PlayerController.Instance.Spawn();
                 break;
             case GameState.StartPhase:
                 break;

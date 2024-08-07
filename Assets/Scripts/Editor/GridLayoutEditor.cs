@@ -22,7 +22,6 @@ public class GridLayoutEditor : EditorWindow
 
     private void OnGUI()
     {
-        LoadTiles();
         _gridLayout = (GridLayoutScript)EditorGUILayout.ObjectField("Grid Layout", _gridLayout, typeof(GridLayoutScript), false);
 
         if (_gridLayout == null)
@@ -30,9 +29,10 @@ public class GridLayoutEditor : EditorWindow
             if (GUILayout.Button("Create New Layout"))
             {
                 _gridLayout = CreateInstance<GridLayoutScript>();
-                _gridLayout.Width = 10; // Default values
-                _gridLayout.Height = 10; // Default values
-                _gridLayout.tiles = new TileType[_gridLayout.Width * _gridLayout.Height];
+                _gridLayout.Width = 10;
+                _gridLayout.Height = 10;
+                _gridLayout.SpawnPosition = Vector2Int.zero;
+                _gridLayout.Tiles = new TileType[_gridLayout.Height * _gridLayout.Width];
             }
             return;
         }
@@ -40,9 +40,9 @@ public class GridLayoutEditor : EditorWindow
         _gridLayout.Width = EditorGUILayout.IntField("Width", _gridLayout.Width);
         _gridLayout.Height = EditorGUILayout.IntField("Height", _gridLayout.Height);
 
-        if (_gridLayout.tiles == null || _gridLayout.tiles.Length != _gridLayout.Width * _gridLayout.Height)
+        if(_gridLayout.Tiles == null || _gridLayout.Tiles.Length != _gridLayout.Height * _gridLayout.Width)
         {
-            _gridLayout.tiles = new TileType[_gridLayout.Width * _gridLayout.Height];
+            _gridLayout.Tiles = new TileType[_gridLayout.Height * _gridLayout.Width];
         }
 
         // Paint type selector
@@ -60,19 +60,19 @@ public class GridLayoutEditor : EditorWindow
             for (int x = 0; x < _gridLayout.Width; x++)
             {
                 Rect tileRect = GUILayoutUtility.GetRect(tileSize, tileSize);
-                EditorGUI.DrawRect(tileRect, GetColorForTileType(_gridLayout.tiles[y * _gridLayout.Width + x]));
+                EditorGUI.DrawRect(tileRect, GetColorForTileType(_gridLayout.GetTile(y, x)));
 
                 if (tileRect.Contains(Event.current.mousePosition))
                 {
                     if (Event.current.type == EventType.MouseDown && Event.current.button == 0)
                     {
                         _isPainting = true;
-                        _gridLayout.tiles[y * _gridLayout.Width + x] = _currentPaintType;
+                        _gridLayout.SetTile(y, x, _currentPaintType);
                         Event.current.Use();
                     }
                     else if (Event.current.type == EventType.MouseDrag && _isPainting)
                     {
-                        _gridLayout.tiles[y * _gridLayout.Width + x] = _currentPaintType;
+                        _gridLayout.SetTile(y, x, _currentPaintType);
                         Event.current.Use();
                     }
                     else if (Event.current.type == EventType.MouseUp && Event.current.button == 0)
@@ -83,6 +83,8 @@ public class GridLayoutEditor : EditorWindow
             }
             GUILayout.EndHorizontal();
         }
+
+        _gridLayout.SpawnPosition = EditorGUILayout.Vector2IntField("Spawn Position", _gridLayout.SpawnPosition);
 
         if (GUILayout.Button("Save Layout"))
         {

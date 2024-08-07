@@ -77,6 +77,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
   m_PrefabInstance: {fileID: 3393242631772361780}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2556920386819160770 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 894872419453349622, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 3393242631772361780}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &2703837010042837204 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 761897088000232672, guid: 82f3ed372f2833643a556f0209216086, type: 3}
@@ -101,5 +106,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 2703837010042837204}
   _highlight: {fileID: 1034285105158438520}
+  _collision: {fileID: 2556920386819160770}
   ScriptableTile: {fileID: 11400000, guid: 445c59bc0f106294b92d952b858aa108, type: 2}
   OccuppyingTower: {fileID: 0}

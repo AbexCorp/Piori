@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_Layer
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5734752164794516986, guid: 82f3ed372f2833643a556f0209216086, type: 3}
       propertyPath: m_Name
       value: GroundTile
@@ -65,6 +69,11 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
   m_PrefabInstance: {fileID: 3282745270207613805}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &2442533020752553371 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 894872419453349622, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+  m_PrefabInstance: {fileID: 3282745270207613805}
+  m_PrefabAsset: {fileID: 0}
 --- !u!212 &2818244235503404941 stripped
 SpriteRenderer:
   m_CorrespondingSourceObject: {fileID: 761897088000232672, guid: 82f3ed372f2833643a556f0209216086, type: 3}
@@ -89,7 +98,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _spriteRenderer: {fileID: 2818244235503404941}
   _highlight: {fileID: 919609049641869601}
+  _collision: {fileID: 2442533020752553371}
   ScriptableTile: {fileID: 11400000, guid: 33e117207250b404d95b96d2ad6d500a, type: 2}
-  OccupiedUnit: {fileID: 0}
-  TileName: Grass
-  _isWalkable: 1
+  OccuppyingTower: {fileID: 0}
