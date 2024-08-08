@@ -81,10 +81,7 @@ public class GridManager : MonoBehaviour
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
-    //public Tile GetHeroSpawnTile()
-    //{
-    //    return _tiles.Where(t => t.Key.x < _width / 2 && t.Value.IsWalkable).OrderBy(t => Random.value).First().Value;
-    //}
+
 
     public Tile GetTileAtPosition(Vector2 position)
     {
@@ -98,5 +95,30 @@ public class GridManager : MonoBehaviour
         if(tile == null)
             return null;
         return tile;
+    }
+    public Tile GetRandomBorderTile()
+    {
+        int rng = UnityEngine.Random.Range(1, 5);
+        int rngX;
+        int rngY;
+        switch (rng)
+        {
+            case 1: //left
+                rngY = UnityEngine.Random.Range(0, LoadedMap.Height);
+                return GetTileAtPosition(new Vector2(0, rngY));
+
+            case 2: //top
+                rngX = UnityEngine.Random.Range(0, LoadedMap.Width);
+                return GetTileAtPosition(new Vector2(rngX, 0));
+
+            case 3: //right
+                rngY = UnityEngine.Random.Range(0, LoadedMap.Height);
+                return GetTileAtPosition(new Vector2(LoadedMap.Width -1, rngY));
+
+            case 4: //down
+                rngX = UnityEngine.Random.Range(0, LoadedMap.Width);
+                return GetTileAtPosition(new Vector2(rngX, LoadedMap.Height -1));
+        }
+        return null;
     }
 }
