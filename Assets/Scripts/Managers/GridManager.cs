@@ -21,10 +21,11 @@ public class GridManager : MonoBehaviour
     //Fields & Properties
 
 
-
     //<<<Tiles>>>
     private Dictionary<TileType, ScriptableTile> _scriptedTiles = new();
     private Dictionary<Vector2, Tile> _tiles;
+    private List<Tile> _borderTiles;
+
 
     private void Awake()
     {
@@ -53,7 +54,7 @@ public class GridManager : MonoBehaviour
 
 
     GridLayoutScript layout; /////////////////////////////////// REEEEEEEEEEMOVVVVVVVVE THISSSSSSSS
-    public void Gener(GridLayoutScript layout)
+    private void SpawnTilesFromLayout(GridLayoutScript layout)
     {
         _tiles = new Dictionary<Vector2, Tile>();
 
@@ -73,11 +74,25 @@ public class GridManager : MonoBehaviour
         _camera.orthographicSize = layout.Width >= layout.Height ? layout.Height / 2 : layout.Width / 2;
         LoadedMap = layout;
     }
+    private void FindBorderTiles()
+    {
+        _borderTiles = new();
+        for(int x = 0; x < LoadedMap.Width; x++)
+        {
+            _borderTiles.Add(GetTileAtPosition(new Vector2(x,0)));
+            _borderTiles.Add(GetTileAtPosition(new Vector2(x, LoadedMap.Height - 1)));
+        }
+        for(int y = 1; y < LoadedMap.Height -1; y++)
+        {
+            _borderTiles.Add(GetTileAtPosition(new Vector2(0,y)));
+            _borderTiles.Add(GetTileAtPosition(new Vector2(LoadedMap.Width -1, y)));
+        }
+    }
 
     public void GenerateGrid()
     {
-        Gener(layout);
-        
+        SpawnTilesFromLayout(layout);
+        FindBorderTiles();
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
 
@@ -98,27 +113,6 @@ public class GridManager : MonoBehaviour
     }
     public Tile GetRandomBorderTile()
     {
-        int rng = UnityEngine.Random.Range(1, 5);
-        int rngX;
-        int rngY;
-        switch (rng)
-        {
-            case 1: //left
-                rngY = UnityEngine.Random.Range(0, LoadedMap.Height);
-                return GetTileAtPosition(new Vector2(0, rngY));
-
-            case 2: //top
-                rngX = UnityEngine.Random.Range(0, LoadedMap.Width);
-                return GetTileAtPosition(new Vector2(rngX, 0));
-
-            case 3: //right
-                rngY = UnityEngine.Random.Range(0, LoadedMap.Height);
-                return GetTileAtPosition(new Vector2(LoadedMap.Width -1, rngY));
-
-            case 4: //down
-                rngX = UnityEngine.Random.Range(0, LoadedMap.Width);
-                return GetTileAtPosition(new Vector2(rngX, LoadedMap.Height -1));
-        }
-        return null;
+        return _borderTiles?.ToList()?.OrderBy(o => UnityEngine.Random.value)?.First();
     }
 }

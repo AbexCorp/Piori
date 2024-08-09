@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseEnemy
+public abstract class BaseEnemy : MonoBehaviour
 {
     //Components
 
@@ -24,14 +24,7 @@ public abstract class BaseEnemy
     protected float distanceToPlayer;
 
 
-    protected void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    protected void Update()
-    {
-        
-    }
+    //Pathfinding
+    //Stage one - find path and follow it
+    //Stage two - goes straight to player
 }
