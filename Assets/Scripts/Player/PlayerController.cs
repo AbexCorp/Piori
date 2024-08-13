@@ -10,6 +10,8 @@ public class PlayerController : MonoBehaviour
     //Components
     [SerializeField]
     private SpriteRenderer _spriteRenderer;
+    [SerializeField]
+    private Rigidbody2D _rigidBody;
 
     //Inspector References
 
@@ -19,6 +21,8 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Range(1f, 3f)]
     private float _moveSpeed = 1;
+    [HideInInspector]
+    public Vector2 Position => transform.position;
 
     private Vector2 _movement;
 
@@ -26,11 +30,16 @@ public class PlayerController : MonoBehaviour
     private void Awake()
     {
         Instance = this;
+        if(_spriteRenderer == null)
+            _spriteRenderer = GetComponent<SpriteRenderer>();
+        if( _rigidBody == null)
+            _rigidBody = GetComponent<Rigidbody2D>();
     }
 
     void Update()
     {
-        gameObject.GetComponent<Rigidbody2D>().velocity = _movement * _moveSpeed;
+        _rigidBody.velocity = _movement * _moveSpeed;
+        UpdateGridPosition();
     }
 
     public void OnMove(InputAction.CallbackContext context)
@@ -54,5 +63,17 @@ public class PlayerController : MonoBehaviour
 
         gameObject.transform.position = tileToSpawn.transform.position;
         Physics2D.SyncTransforms();
+    }
+
+    private void UpdateGridPosition()
+    {
+        RaycastHit2D hit = Physics2D.Raycast(origin:transform.position, direction:Vector2.zero, distance:1, layerMask:LayerMask.GetMask("Tiles"));
+        if (hit)
+        {
+            hit.collider.TryGetComponent<Tile>(out Tile tile);
+            if (tile == null)
+                return;
+            GridManager.Instance.SetPlayerTile(tile);
+        }
     }
 }

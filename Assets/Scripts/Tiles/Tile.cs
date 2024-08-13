@@ -15,21 +15,37 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
 
     //Inspector References
-    public ScriptableTile ScriptableTile;
+    public ScriptableTile ScriptableTile { get { return _scriptableTile; } }
+    [SerializeField]
+    protected ScriptableTile _scriptableTile;
 
 
     //Code References
     [HideInInspector]
-    public BaseTower OccuppyingTower;
+    public BaseTower OccuppyingTower { get; private set; }
+    [HideInInspector]
+    public NavigationNode NavigationNode { get; private set; }
 
 
     //Fields & Properties
     public string TileName => ScriptableTile.TileName;
     public bool IsWalkable => ScriptableTile.IsWalkable && OccuppyingTower == null;
-    public bool IsBuildable => ScriptableTile.IsBuildable && OccuppyingTower == null;
+    public bool IsBuildable => ScriptableTile.IsBuildable && OccuppyingTower == null && !GridManager.Instance.IsBorderTile(this);
     public bool BlocksBullets => ScriptableTile.BlocksBullets; // || OccypyingTower is tall???
     public TileType TileType => ScriptableTile.TileType;
     public Color TileColor => ScriptableTile.TileColor;
+    public Coordinates TileCoordinates { get; private set; }
+
+    public struct Coordinates
+    {
+        public int X { get { return (int)Position.x; } }
+        public int Y { get { return (int)Position.y; } }
+        public Vector2 Position { get; private set; }
+        public Coordinates(int x, int y)
+        {
+            Position = new Vector2(x, y);
+        }
+    }
 
 
 
@@ -43,6 +59,8 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             EnableCollisions(fullObstacle: true);
         else if (!IsWalkable)
             EnableCollisions(fullObstacle: false);
+        TileCoordinates = new Coordinates(x, y);
+        NavigationNode = new NavigationNode(this);
     }
 
     public void SetTower(BaseTower tower) //Move tower here

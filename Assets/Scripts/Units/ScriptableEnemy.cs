@@ -5,7 +5,7 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Unit", menuName = "Scriptable Enemy")]
 public class ScriptableEnemy : ScriptableObject
 {
-    public BaseEnemy UnitPrefab;
+    public BaseEnemy EnemyPrefab;
 
 
     public string Name = "NOT SET";

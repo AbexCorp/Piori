@@ -107,5 +107,4 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 2703837010042837204}
   _highlight: {fileID: 1034285105158438520}
   _collision: {fileID: 2556920386819160770}
-  ScriptableTile: {fileID: 11400000, guid: 445c59bc0f106294b92d952b858aa108, type: 2}
-  OccuppyingTower: {fileID: 0}
+  _scriptableTile: {fileID: 11400000, guid: 445c59bc0f106294b92d952b858aa108, type: 2}

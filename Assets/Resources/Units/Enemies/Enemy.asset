@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dcd26fc2dbe5350498d45d9ef94dd3eb, type: 3}
   m_Name: Enemy
   m_EditorClassIdentifier: 
-  UnitPrefab: {fileID: 4099445705584312349, guid: dd589bf88b2a5f24f85bee0013f05fbe, type: 3}
+  EnemyPrefab: {fileID: 4099445705584312349, guid: dd589bf88b2a5f24f85bee0013f05fbe, type: 3}
   Name: TempEnemy
   PointCost: 1
   Speed: 1

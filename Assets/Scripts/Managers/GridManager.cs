@@ -19,12 +19,11 @@ public class GridManager : MonoBehaviour
     public GridLayoutScript LoadedMap;
 
     //Fields & Properties
-
-
-    //<<<Tiles>>>
     private Dictionary<TileType, ScriptableTile> _scriptedTiles = new();
     private Dictionary<Vector2, Tile> _tiles;
     private List<Tile> _borderTiles;
+    public Tile PlayerTile {  get; private set; }
+
 
 
     private void Awake()
@@ -33,6 +32,7 @@ public class GridManager : MonoBehaviour
         LoadTiles();
         layout = Resources.LoadAll<GridLayoutScript>("GridLayouts").ToList().FirstOrDefault();
     }
+
 
     private void LoadTiles()
     {
@@ -62,8 +62,9 @@ public class GridManager : MonoBehaviour
         {
             for (int x = 0; x < layout.Width; x++)
             {
-                Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, -y + layout.Height - 1), Quaternion.identity);
-                createdTile.name = $"Tile {y} {x}";
+                //Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, -y + layout.Height - 1), Quaternion.identity);
+                Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, y), Quaternion.identity);
+                createdTile.name = $"Tile {x} {y}";
 
                 createdTile.Init(x, y);
                 _tiles[new Vector2(x, y)] = createdTile;
@@ -93,9 +94,20 @@ public class GridManager : MonoBehaviour
     {
         SpawnTilesFromLayout(layout);
         FindBorderTiles();
+        foreach (var tile in _tiles)
+            tile.Value.NavigationNode.ConnectNeighboringTiles();
+
+
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
-
+    /*
+        Tile start = GetTileAtPosition( new Vector2(LoadedMap.Width -1, LoadedMap.Height -1) );
+        Tile end = GetTileAtPosition(new Vector2(13, 0));
+        var list = Pathfinding.FindPath(start.NavigationNode, end.NavigationNode);
+        start.GetComponent<SpriteRenderer>().color = Color.yellow;
+        end.GetComponent<SpriteRenderer>().color = Color.yellow;
+        list.Last().Tile.GetComponent<SpriteRenderer>().color = Color.blue;
+    */
 
 
     public Tile GetTileAtPosition(Vector2 position)
@@ -106,7 +118,7 @@ public class GridManager : MonoBehaviour
     }
     public Tile GetRandomWalkableTile()
     {
-        Tile tile = _tiles.Where(t => t.Value.IsWalkable).FirstOrDefault().Value;
+        Tile tile = _tiles.Where(t => t.Value.IsWalkable).OrderBy(o => UnityEngine.Random.value).FirstOrDefault().Value;
         if(tile == null)
             return null;
         return tile;
@@ -114,5 +126,12 @@ public class GridManager : MonoBehaviour
     public Tile GetRandomBorderTile()
     {
         return _borderTiles?.ToList()?.OrderBy(o => UnityEngine.Random.value)?.First();
+    }
+    public bool IsBorderTile(Tile tile) => _borderTiles.Contains(tile);
+    public void SetPlayerTile(Tile tile)
+    {
+        if (tile == null)
+            return;
+        PlayerTile = tile;
     }
 }

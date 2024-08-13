@@ -92,8 +92,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 7080720427008715569}
   _highlight: {fileID: 5304312421260627357}
   _collision: {fileID: 7258167979879418151}
-  ScriptableTile: {fileID: 11400000, guid: d90378253a770f24bb029b7127f9d3e5, type: 2}
-  OccuppyingTower: {fileID: 0}
+  _scriptableTile: {fileID: 11400000, guid: d90378253a770f24bb029b7127f9d3e5, type: 2}
 --- !u!1 &5304312421260627357 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
