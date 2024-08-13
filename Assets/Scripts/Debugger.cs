@@ -16,16 +16,16 @@ public class Debugger : MonoBehaviour
     void Update()
     {
         counter++;
-        if(counter == 2000)
+        if (counter == 2000)
         {
-            //counter = 0;
+            counter = 0;
             Spawn();
         }
     }
     private void Spawn()
     {
         BaseEnemy enemy = Instantiate(_scriptableEnemies.FirstOrDefault().EnemyPrefab);
-        enemy.transform.position = GridManager.Instance.GetRandomWalkableTile().TileCoordinates.Position;
+        enemy.transform.position = GridManager.Instance.GetRandomWalkableTile().TileCoordinates.WorldPosition;
     }
     //public void BuildTower(BaseTower towerPrefab)
     //{

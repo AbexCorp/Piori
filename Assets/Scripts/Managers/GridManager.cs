@@ -62,8 +62,8 @@ public class GridManager : MonoBehaviour
         {
             for (int x = 0; x < layout.Width; x++)
             {
-                //Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, -y + layout.Height - 1), Quaternion.identity);
-                Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, y), Quaternion.identity);
+                Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, -y + layout.Height - 1), Quaternion.identity);
+                //Tile createdTile = Instantiate(GetPrefabForTileType(layout.GetTile(y, x)), new Vector3(x, y), Quaternion.identity);
                 createdTile.name = $"Tile {x} {y}";
 
                 createdTile.Init(x, y);
@@ -126,6 +126,10 @@ public class GridManager : MonoBehaviour
     public Tile GetRandomBorderTile()
     {
         return _borderTiles?.ToList()?.OrderBy(o => UnityEngine.Random.value)?.First();
+    }
+    public Tile GetRandomBorderTileWalkable()
+    {
+        return _borderTiles?.ToList()?.Where(t => t.IsWalkable).OrderBy(o => UnityEngine.Random.value).FirstOrDefault();
     }
     public bool IsBorderTile(Tile tile) => _borderTiles.Contains(tile);
     public void SetPlayerTile(Tile tile)

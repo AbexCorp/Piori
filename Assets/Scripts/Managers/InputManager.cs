@@ -69,7 +69,7 @@ public class InputManager : MonoBehaviour
             hit.collider.gameObject.TryGetComponent<IMouseInteractions>(out IMouseInteractions clickable);
             if(clickable != null)
             {
-                clickable?.OnMouseLeftClick();
+                clickable?.OnMouseLeftClick(context);
             }
         }
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public abstract class Tile : MonoBehaviour, IMouseInteractions
 {
@@ -38,12 +39,14 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
     public struct Coordinates
     {
-        public int X { get { return (int)Position.x; } }
-        public int Y { get { return (int)Position.y; } }
-        public Vector2 Position { get; private set; }
-        public Coordinates(int x, int y)
+        public int X { get { return (int)GridPosition.x; } }
+        public int Y { get { return (int)GridPosition.y; } }
+        public Vector2 GridPosition { get; private set; }
+        public Vector2 WorldPosition { get; private set; }
+        public Coordinates(int x, int y, Vector2 worldPosition)
         {
-            Position = new Vector2(x, y);
+            GridPosition = new Vector2(x, y);
+            WorldPosition = worldPosition;
         }
     }
 
@@ -59,7 +62,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             EnableCollisions(fullObstacle: true);
         else if (!IsWalkable)
             EnableCollisions(fullObstacle: false);
-        TileCoordinates = new Coordinates(x, y);
+        TileCoordinates = new Coordinates(x, y, transform.position);
         NavigationNode = new NavigationNode(this);
     }
 
@@ -103,8 +106,10 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         MenuManager.Instance.ShowTileInfo(null);
     }
 
-    void IMouseInteractions.OnMouseLeftClick()
+    void IMouseInteractions.OnMouseLeftClick(InputAction.CallbackContext context)
     {
+        if (!context.performed)
+            return;
         //if (GameManager.Instance.GameState != GameState.BuyPhase)
         //    return;
         if(TowerManager.Instance.IsSelling == true) //Selling

@@ -41,7 +41,7 @@ public class NavigationNode
         Neighbors = new();
         foreach(var direction in Directions)
         {
-            Tile t = GridManager.Instance.GetTileAtPosition(direction + Tile.TileCoordinates.Position);
+            Tile t = GridManager.Instance.GetTileAtPosition(direction + Tile.TileCoordinates.GridPosition);
             if(t != null)
                 Neighbors.Add(t.NavigationNode);
         }

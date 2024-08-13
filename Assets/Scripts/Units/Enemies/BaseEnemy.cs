@@ -25,6 +25,7 @@ public abstract class BaseEnemy : MonoBehaviour
     public int Damage => ScriptableEnemy.Damage;
     public float AttackSpeed => ScriptableEnemy.AttackSpeed;
 
+    protected List<NavigationNode> _pathToPlayer = new();
     protected Tile _position;
     protected Vector2 _destination;
     protected float _distanceToPlayer;
@@ -50,17 +51,24 @@ public abstract class BaseEnemy : MonoBehaviour
                 return;
 
             //List<NavigationNode> path = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
-            path = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
+            _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
             //Debug.Log(path.Last().Tile.gameObject.name);
             //Debug.Log(path.Last().Tile.TileCoordinates.Position);
             //Debug.Break();
-            _destination = path.Last().Tile.TileCoordinates.Position;
+            if(_pathToPlayer == null || _pathToPlayer.Count == 0)
+                return;
+            _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
         }
         else if (_distanceToPlayer <= 1)
             _destination = PlayerController.Instance.Position;
     }
     protected void Move()
     {
+        if(_pathToPlayer == null || _pathToPlayer.Count == 0)
+        {
+            _rigidBody.velocity = Vector2.zero;
+            return;
+        }
         Vector2 direction = (_destination - (Vector2)transform.position).normalized;
         _rigidBody.velocity = direction * Speed;
     }
@@ -77,19 +85,18 @@ public abstract class BaseEnemy : MonoBehaviour
         }
     }
 
-    List<NavigationNode> path = new();
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
-        if (path == null)
+        if (_pathToPlayer == null)
             return;
 
-        for (int i = 0; i < path.Count - 1; i++)
+        for (int i = 0; i < _pathToPlayer.Count - 1; i++)
         {
-            var p1 = path[i].Tile.TileCoordinates.Position;
-            var p2 = path[i + 1].Tile.TileCoordinates.Position;
-            var thickness = 30;
-            Handles.DrawBezier(p1, p2, p1, p2, Color.white, null, thickness);
+            var p1 = _pathToPlayer[i].Tile.TileCoordinates.WorldPosition;
+            var p2 = _pathToPlayer[i + 1].Tile.TileCoordinates.WorldPosition;
+            var thickness = 8;
+            Handles.DrawBezier(p1, p2, p1, p2, Color.red, null, thickness);
         }
     }
 }
