@@ -73,20 +73,20 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
         tower.transform.position = transform.position;
         OccuppyingTower = tower;
-        tower.OccupiedTile = this;
+        tower.SetOccupiedTile(this);
     }
     public void BuildTower(BaseTower towerPrefab)
     {
         BaseTower tower = TowerManager.Instance.SpawnTower(towerPrefab);
         tower.transform.position = transform.position;
         OccuppyingTower = tower;
-        tower.OccupiedTile = this;
+        tower.SetOccupiedTile(this);
         EnableCollisions(fullObstacle: BlocksBullets);
     }
     //public BaseTower TakeTower() { } Move tower from here
     public void DestroyTower()
     {
-        OccuppyingTower.OccupiedTile = null;
+        OccuppyingTower.SetOccupiedTile(null);
         Destroy(OccuppyingTower.gameObject);
         OccuppyingTower = null;
         DisableCollisions();

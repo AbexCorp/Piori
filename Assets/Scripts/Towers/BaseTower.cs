@@ -9,22 +9,18 @@ public class BaseTower : MonoBehaviour
     protected SpriteRenderer _spriteRenderer;
 
     //Inspector References
-    public ScriptableTower ScriptableTower;
+    [SerializeField]
+    protected ScriptableTower _scriptableTower;
 
     //Code References
-    public Tile OccupiedTile;
+    public Tile OccupiedTile { get; protected set; }
+
+    //Properties
+    public ScriptableTower ScriptableTower { get { return _scriptableTower; } }
 
 
-    
-    // Start is called before the first frame update
-    void Start()
+    public void SetOccupiedTile(Tile tile)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        OccupiedTile = tile;
     }
 }

@@ -5,26 +5,55 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "New Tower", menuName = "Scriptable Tower")]
 public class ScriptableTower : ScriptableObject
 {
-    public BaseTower TowerPrefab;
+    [SerializeField]
+    protected BaseTower _towerPrefab;
 
-    public BaseTower UpgradedFrom;
-    public BaseTower[] UpgradesTo;
+    [SerializeField]
+    protected BaseTower _upgradedFrom;
+    [SerializeField]
+    protected BaseTower[] _upgradesTo;
 
-    public TowerType TowerType;
-    public TowerTier TowerTier;
+    [SerializeField]
+    public TowerType _towerType;
+    [SerializeField]
+    public TowerTier _towerTier;
+
+
+    [SerializeField] 
+    protected string _towerName = "Building name is null";
+    [SerializeField]
+    private float _baseAttackSpeed;
+    [SerializeField]
+    private int _baseDamage;
+    [SerializeField]
+    private float _baseRange;
 
     //public bool ShootsProjectile;
     //public Projectile ProjectilePrefab
 
-    public string TowerName = "Tower name is null";
+
+    public BaseTower TowerPrefab { get { return _towerPrefab; } }
+
+    public BaseTower UpgradedFrom {  get { return _upgradedFrom; } }
+    public BaseTower[] UpgradesTo { get { return _upgradesTo; } }
+
+    public TowerType TowerType { get { return _towerType; } }
+    public TowerTier TowerTier { get { return _towerTier; } }
+
+
+    public string TowerName { get { return _towerName; } }
+    public float BaseAttackSpeed { get { return _baseAttackSpeed; } }
+    public int BaseDamage { get { return _baseDamage; } }
+    public float BaseRange { get { return _baseRange; } }
 }
 
 
 public enum TowerType
 {
-    Bullet = 0,
-    Destruction = 1,
-    Debuff = 2
+    Wall = 0,
+    Bullet = 1,
+    Destruction = 2,
+    Debuff = 3
 }
 
 public enum TowerTier
