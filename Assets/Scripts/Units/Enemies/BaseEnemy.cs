@@ -29,38 +29,64 @@ public abstract class BaseEnemy : MonoBehaviour
     protected Tile _position;
     protected Vector2 _destination;
     protected float _distanceToPlayer;
+    protected bool _playerMoved = true;
+    protected bool _switchedTile = true;
 
 
     protected void Awake()
     {
         if( _rigidBody == null)
             _rigidBody = GetComponent<Rigidbody2D>();
+        GridManager.Instance.OnPlayerChangeTile += PlayerMoved;
+        StartCoroutine(Pathfind());
+    }
+    protected void Start()
+    {
+        Pathfind();
     }
     protected void Update()
     {
         _distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.Position);
-        FindPath();
         Move();
+    }
+    protected IEnumerator Pathfind()
+    {
+        YieldInstruction yield = new WaitForSeconds(0.25f);
+        while (true)
+        {
+            FindPath();
+            yield return yield;
+        }
     }
     protected void FindPath()
     {
-        if (_distanceToPlayer > 1)
+        if(_distanceToPlayer <= 1)
+            _destination = PlayerController.Instance.Position;
+        else if(_distanceToPlayer > 1)
         {
             UpdateGridPosition();
             if (_position == null || GridManager.Instance.PlayerTile == null)
                 return;
 
-            //List<NavigationNode> path = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
-            _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
-            //Debug.Log(path.Last().Tile.gameObject.name);
-            //Debug.Log(path.Last().Tile.TileCoordinates.Position);
-            //Debug.Break();
+            if(_pathToPlayer == null || _pathToPlayer.Count == 0 || _playerMoved)
+            {
+                _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
+                _playerMoved = false;
+            }
             if(_pathToPlayer == null || _pathToPlayer.Count == 0)
                 return;
-            _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
+
+            if (_switchedTile && Vector2.Distance(transform.position, _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition) < 0.2f) //Continue Walking
+            {
+                _pathToPlayer.Remove(_pathToPlayer.Last());
+                if (_pathToPlayer.Count == 0)
+                    return;
+                _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
+                _switchedTile = false;
+            }
+            else
+                _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
         }
-        else if (_distanceToPlayer <= 1)
-            _destination = PlayerController.Instance.Position;
     }
     protected void Move()
     {
@@ -81,6 +107,8 @@ public abstract class BaseEnemy : MonoBehaviour
             hit.collider.TryGetComponent<Tile>(out Tile tile);
             if (tile == null)
                 return;
+            if (tile != _position)
+                _switchedTile = true;
             _position = tile;
         }
     }
@@ -99,4 +127,5 @@ public abstract class BaseEnemy : MonoBehaviour
             Handles.DrawBezier(p1, p2, p1, p2, Color.red, null, thickness);
         }
     }
+    private void PlayerMoved() => _playerMoved = true;
 }

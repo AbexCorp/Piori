@@ -23,6 +23,7 @@ public class GridManager : MonoBehaviour
     private Dictionary<Vector2, Tile> _tiles;
     private List<Tile> _borderTiles;
     public Tile PlayerTile {  get; private set; }
+    public Action OnPlayerChangeTile;
 
 
 
@@ -136,6 +137,8 @@ public class GridManager : MonoBehaviour
     {
         if (tile == null)
             return;
+        if (tile != PlayerTile)
+            OnPlayerChangeTile?.Invoke();
         PlayerTile = tile;
     }
 }
