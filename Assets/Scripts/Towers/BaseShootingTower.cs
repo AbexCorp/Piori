@@ -37,33 +37,50 @@ public class BaseShootingTower : BaseTower
     }
 
 
-    protected void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (_target != null)
-            return;
-        FindTarget(collision);
-    }
+
     protected void OnTriggerStay2D(Collider2D collision)
     {
-        if (_target != null)
-        {
-            Attack();
+        if(_attackIsOnCooldown)
             return;
-        }
-        else
-            FindTarget(collision);
+        if (_target != null && collision.gameObject != _target.gameObject)
+            return;
+
+        FindTarget(collision);
+        Attack();
+    }
+    protected void OnTriggerExit2D(Collider2D collision)
+    {
+        if(_target == null)
+            return;
+        if (collision.gameObject == _target.gameObject)
+            _target = null;
     }
 
     protected void FindTarget(Collider2D collision)
     {
-        if (_target != null)
-            return;
-        if(collision.TryGetComponent<BaseEnemy>(out BaseEnemy enemy))
+        if (_target == null)
+        {
+            collision.TryGetComponent<BaseEnemy>(out BaseEnemy enemy);
             _target = enemy;
+        }
+        if (_target == null)
+            return;
+
+        RaycastHit2D hit = Physics2D.Raycast
+        (
+            origin: gameObject.transform.position, 
+            direction: collision.gameObject.transform.position - gameObject.transform.position, 
+            distance: Vector2.Distance(gameObject.transform.position, collision.gameObject.transform.position),
+            layerMask: LayerMask.GetMask(new string[] {"Enemy", "ObstacleFull"})
+        );
+        if (!hit)
+            return;
+        if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Enemy"))
+            _target = null;
     }
     protected void Attack()
     {
-        if(_attackIsOnCooldown)
+        if(_attackIsOnCooldown || _target == null)
             return;
 
         _target.GetDamaged(Damage);
@@ -78,15 +95,15 @@ public class BaseShootingTower : BaseTower
         _spriteRenderer.color = Color.cyan;
         _attackIsOnCooldown = false;
     }
-    //// Start is called before the first frame update
-    //void Start()
-    //{
 
-    //}
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(transform.position, _circleCollider.radius);
 
-    //// Update is called once per frame
-    //void Update()
-    //{
+        if (_target == null) 
+            return;
 
-    //}
+        Gizmos.DrawLine(transform.position, _target.gameObject.transform.position);
+    }
 }
