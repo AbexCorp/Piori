@@ -13,6 +13,8 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
     protected GameObject _highlight;
     [SerializeField]
     protected GameObject _collision;
+    [SerializeField]
+    protected BoxCollider2D _collider;
 
 
     //Inspector References
@@ -54,7 +56,13 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
 
 
-
+    protected void Awake()
+    {
+        if(_spriteRenderer == null)
+            _spriteRenderer = gameObject.GetComponent<SpriteRenderer>();
+        if(_collider == null)
+            _collider = gameObject.GetComponent<BoxCollider2D>();
+    }
     public virtual void Init(int x, int y)
     {
         //bool isOffset = (x % 2 == 0 && y % 2 != 0) || (x % 2 != 0 && y % 2 == 0);
@@ -110,6 +118,15 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         _isCheckingForEnclosure = false;
         return false;
     }
+    protected bool BuildingIsObstructedByPlayerOrEnemy()
+    {
+        if (GridManager.Instance.PlayerTile == this)
+            return true;
+        Collider2D col = Physics2D.OverlapBox(point:_collider.bounds.center, size:_collider.bounds.extents * 0.9f, angle:0, layerMask: LayerMask.GetMask(new string[] {"Player", "Enemy"}));
+        if(col != null)
+            return true;
+        return false;
+    }
 
     
 
@@ -147,7 +164,12 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
             if(BuildingHereCreatesEnclosedArea())
             {
-                Debug.LogWarning("Encloesd");
+                Debug.LogWarning("Cannot create enclosed spaces");
+                return;
+            }
+            if (BuildingIsObstructedByPlayerOrEnemy())
+            {
+                Debug.LogWarning("Blocked by player or enemy");
                 return;
             }
             BuildTower(TowerManager.Instance.SelectedTowerPrefabToBuy);
