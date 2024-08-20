@@ -24,6 +24,7 @@ public class GridManager : MonoBehaviour
     private List<Tile> _borderTiles;
     public Tile PlayerTile {  get; private set; }
     public Action OnPlayerChangeTile;
+    public Action OnMapChange;
 
 
 
@@ -31,9 +32,12 @@ public class GridManager : MonoBehaviour
     {
         Instance = this;
         LoadTiles();
-        layout = Resources.LoadAll<GridLayoutScript>("GridLayouts").ToList().FirstOrDefault();
+        layout = Resources.LoadAll<GridLayoutScript>("GridLayouts").ToList().FirstOrDefault(); //TEMP
     }
+    GridLayoutScript layout; /////////////////////////////////// REEEEEEEEEEMOVVVVVVVVE THISSSSSSSS
 
+
+    #region >>> Generation <<<
 
     private void LoadTiles()
     {
@@ -53,8 +57,6 @@ public class GridManager : MonoBehaviour
         return tile.TilePrefab;
     }
 
-
-    GridLayoutScript layout; /////////////////////////////////// REEEEEEEEEEMOVVVVVVVVE THISSSSSSSS
     private void SpawnTilesFromLayout(GridLayoutScript layout)
     {
         _tiles = new Dictionary<Vector2, Tile>();
@@ -101,14 +103,8 @@ public class GridManager : MonoBehaviour
 
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
     }
-    /*
-        Tile start = GetTileAtPosition( new Vector2(LoadedMap.Width -1, LoadedMap.Height -1) );
-        Tile end = GetTileAtPosition(new Vector2(13, 0));
-        var list = Pathfinding.FindPath(start.NavigationNode, end.NavigationNode);
-        start.GetComponent<SpriteRenderer>().color = Color.yellow;
-        end.GetComponent<SpriteRenderer>().color = Color.yellow;
-        list.Last().Tile.GetComponent<SpriteRenderer>().color = Color.blue;
-    */
+
+    #endregion
 
 
     public Tile GetTileAtPosition(Vector2 position)

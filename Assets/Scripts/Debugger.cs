@@ -7,7 +7,7 @@ public class Debugger : MonoBehaviour
 {
     private List<ScriptableEnemy> _scriptableEnemies;
     int counter = 0;
-    int cooldown = 1020;
+    int cooldown = 2020;
 
     private void Awake()
     {
@@ -20,8 +20,10 @@ public class Debugger : MonoBehaviour
         if (counter > cooldown)
         {
             counter = 0;
-            if(cooldown - 50 > 0)
-                cooldown -= 50;
+            if(cooldown - 30 > 20)
+                cooldown -= 30;
+            else
+                cooldown = 20;
             Spawn();
         }
     }

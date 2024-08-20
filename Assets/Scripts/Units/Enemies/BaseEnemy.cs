@@ -37,6 +37,7 @@ public abstract class BaseEnemy : MonoBehaviour
     protected Vector2 _destination;
     protected float _distanceToPlayer;
     protected bool _playerMoved = true;
+    protected bool _mapChanged = true;
     protected bool _switchedTile = true;
 
     protected int _currentHealth = 1;
@@ -47,6 +48,7 @@ public abstract class BaseEnemy : MonoBehaviour
         if( _rigidBody == null)
             _rigidBody = GetComponent<Rigidbody2D>();
         GridManager.Instance.OnPlayerChangeTile += PlayerMoved;
+        GridManager.Instance.OnMapChange += MapChanged;
 
         _currentHealth = Health;
 
@@ -85,10 +87,11 @@ public abstract class BaseEnemy : MonoBehaviour
             if (_position == null || GridManager.Instance.PlayerTile == null)
                 return;
 
-            if(_pathToPlayer == null || _pathToPlayer.Count == 0 || _playerMoved)
+            if(_pathToPlayer == null || _pathToPlayer.Count == 0 || _playerMoved || _mapChanged)
             {
                 _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
                 _playerMoved = false;
+                _mapChanged = false;
             }
             if(_pathToPlayer == null || _pathToPlayer.Count == 0)
                 return;
@@ -130,6 +133,7 @@ public abstract class BaseEnemy : MonoBehaviour
         }
     }
     private void PlayerMoved() => _playerMoved = true;
+    private void MapChanged() => _mapChanged = true;
 
     #endregion
 

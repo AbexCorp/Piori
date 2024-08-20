@@ -46,6 +46,7 @@ public class MenuManager : MonoBehaviour
         _selectedTowerToBuyObject.SetActive(true);
     }
 
+    //Spawn button
     public void SelectTower()
     {
         BaseTower selectedPrefab = Resources.LoadAll<ScriptableTower>("Towers").ToList().FirstOrDefault().TowerPrefab;
@@ -54,10 +55,14 @@ public class MenuManager : MonoBehaviour
     }
     public void ClearTower()
     {
+        TowerManager.Instance.ClearAllInstructions(); /////
+
+
         TowerManager.Instance.ClearTowerToBuy();
         ShowTowerToBuy();
     }
 
+    //Selling button
     public void StartSelling()
     {
         if(TowerManager.Instance.IsSelling == true)

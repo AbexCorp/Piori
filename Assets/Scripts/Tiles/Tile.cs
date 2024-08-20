@@ -30,7 +30,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
     //Fields & Properties
     public string TileName => ScriptableTile.TileName;
-    public bool IsWalkable => ScriptableTile.IsWalkable && OccuppyingTower == null;
+    public bool IsWalkable => ScriptableTile.IsWalkable && OccuppyingTower == null && !_isCheckingForEnclosure;
     public bool IsBuildable => ScriptableTile.IsBuildable && OccuppyingTower == null && !GridManager.Instance.IsBorderTile(this);
     public bool BlocksBullets => ScriptableTile.BlocksBullets; // || OccypyingTower is tall???
     public TileType TileType => ScriptableTile.TileType;
@@ -49,6 +49,8 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             WorldPosition = worldPosition;
         }
     }
+
+    protected bool _isCheckingForEnclosure = false;
 
 
 
@@ -91,6 +93,23 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         OccuppyingTower = null;
         DisableCollisions();
     }
+    protected bool BuildingHereCreatesEnclosedArea()
+    {
+        _isCheckingForEnclosure = true;
+        foreach(NavigationNode node in NavigationNode.Neighbors)
+        {
+            if (!node.Tile.IsWalkable)
+                continue;
+            List<NavigationNode> path = Pathfinding.FindPath(node, GridManager.Instance.GetRandomBorderTileWalkable().NavigationNode);
+            if (path == null)
+            {
+                _isCheckingForEnclosure = false;
+                return true;
+            }
+        }
+        _isCheckingForEnclosure = false;
+        return false;
+    }
 
     
 
@@ -118,6 +137,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
                 return;
 
             DestroyTower();
+            GridManager.Instance.OnMapChange?.Invoke();
             MenuManager.Instance.StopSelling();
         }
         else if(TowerManager.Instance.SelectedTowerPrefabToBuy != null) //Building
@@ -125,26 +145,17 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             if (OccuppyingTower != null || !IsBuildable)
                 return;
 
+            if(BuildingHereCreatesEnclosedArea())
+            {
+                Debug.LogWarning("Encloesd");
+                return;
+            }
             BuildTower(TowerManager.Instance.SelectedTowerPrefabToBuy);
+            GridManager.Instance.OnMapChange?.Invoke();
             MenuManager.Instance.ClearTower();
         }
     }
 
-    //void OnMouseEnter()
-    //{
-    //    _highlight.SetActive(true);
-    //    MenuManager.Instance.ShowTileInfo(this);
-    //}
-    //void OnMouseExit()
-    //{
-    //    _highlight.SetActive(false);
-    //    MenuManager.Instance.ShowTileInfo(null);
-    //}
-
-    //private void OnMouseDown()
-    //{
-    //    //
-    //}
 
     public void EnableCollisions(bool fullObstacle)
     {
