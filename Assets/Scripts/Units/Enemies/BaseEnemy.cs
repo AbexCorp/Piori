@@ -10,6 +10,11 @@ public abstract class BaseEnemy : MonoBehaviour
     [SerializeField]
     protected Rigidbody2D _rigidBody;
 
+    [SerializeField]
+    protected GameObject _canvas;
+    [SerializeField]
+    protected UnityEngine.UI.Image _healthBar;
+
     //Inspector References
     public ScriptableEnemy ScriptableEnemy;
 
@@ -22,9 +27,11 @@ public abstract class BaseEnemy : MonoBehaviour
     public int PointCost => ScriptableEnemy.PointCost;
     public float Speed => ScriptableEnemy.Speed;
     public int Health => ScriptableEnemy.Health;
+    public int CurrentHealth => _currentHealth;
     public int Damage => ScriptableEnemy.Damage;
     public float AttackSpeed => ScriptableEnemy.AttackSpeed;
 
+    //Pathfinding
     protected List<NavigationNode> _pathToPlayer = new();
     protected Tile _position;
     protected Vector2 _destination;
@@ -32,23 +39,33 @@ public abstract class BaseEnemy : MonoBehaviour
     protected bool _playerMoved = true;
     protected bool _switchedTile = true;
 
+    protected int _currentHealth = 1;
+
 
     protected void Awake()
     {
         if( _rigidBody == null)
             _rigidBody = GetComponent<Rigidbody2D>();
         GridManager.Instance.OnPlayerChangeTile += PlayerMoved;
+
+        _currentHealth = Health;
+
         StartCoroutine(Pathfind());
     }
     protected void Start()
     {
         Pathfind();
+        _canvas.SetActive(false);
     }
     protected void Update()
     {
         _distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.Position);
         Move();
     }
+
+
+    #region >>> Pathfinding <<<
+
     protected IEnumerator Pathfind()
     {
         YieldInstruction yield = new WaitForSeconds(0.25f);
@@ -112,6 +129,24 @@ public abstract class BaseEnemy : MonoBehaviour
             _position = tile;
         }
     }
+    private void PlayerMoved() => _playerMoved = true;
+
+    #endregion
+
+
+    public void GetDamaged(int damage)
+    {
+        _currentHealth -= damage;
+        if (_currentHealth <= 0)
+            Destroy(gameObject);
+        UpdateHealthBar();
+    }
+    protected void UpdateHealthBar()
+    {
+        _canvas.SetActive(true);
+        _healthBar.fillAmount = CurrentHealth / (float)Health;
+    }
+
 
     private void OnDrawGizmos()
     {
@@ -127,5 +162,4 @@ public abstract class BaseEnemy : MonoBehaviour
             Handles.DrawBezier(p1, p2, p1, p2, Color.red, null, thickness);
         }
     }
-    private void PlayerMoved() => _playerMoved = true;
 }

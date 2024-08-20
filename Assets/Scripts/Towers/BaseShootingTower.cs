@@ -66,8 +66,7 @@ public class BaseShootingTower : BaseTower
         if(_attackIsOnCooldown)
             return;
 
-        Destroy(_target.gameObject); //Replace with attack enemy.
-        _target = null;
+        _target.GetDamaged(Damage);
 
         _attackIsOnCooldown = true;
         _spriteRenderer.color = Color.blue;
