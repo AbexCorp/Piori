@@ -76,6 +76,9 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         NavigationNode = new NavigationNode(this);
     }
 
+
+    #region >>> Building <<<
+
     public void SetTower(BaseTower tower) //Move tower here
     {
         //if (tower.OccupiedTile != null) //If tile was set somwhere already, will be used when moving unit
@@ -128,7 +131,86 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         return false;
     }
 
-    
+    #endregion
+
+
+    #region >>> Sprite <<<
+
+    [Space]
+    [Header("Sprites")]
+    [SerializeField]
+    protected Sprite _topLeft;
+    [SerializeField]
+    protected Sprite _topCenter;
+    [SerializeField]
+    protected Sprite _topRight;
+
+    [SerializeField]
+    protected Sprite _middleLeft;
+    [SerializeField]
+    protected Sprite _middleCenter;
+    [SerializeField]
+    protected Sprite _middleRight;
+
+    [SerializeField]
+    protected Sprite _bottomLeft;
+    [SerializeField]
+    protected Sprite _bottomCenter;
+    [SerializeField]
+    protected Sprite _bottomRight;
+
+
+    public void SelectSprite()
+    {
+        bool top;
+        bool left;
+        bool right;
+        bool down;
+
+        top = CompareTileTypeAt(GridManager.GridUp + TileCoordinates.GridPosition);
+        left = CompareTileTypeAt(GridManager.GridLeft + TileCoordinates.GridPosition);
+        right = CompareTileTypeAt(GridManager.GridRight + TileCoordinates.GridPosition);
+        down = CompareTileTypeAt(GridManager.GridDown + TileCoordinates.GridPosition);
+
+
+        if ((top && right && left && down) || (!top && !right && !left && !down))
+            _spriteRenderer.sprite = _middleCenter;
+
+        else if (right && down && !left && !top)
+            _spriteRenderer.sprite = _topLeft;
+        else if (left && down && !top && !right)
+            _spriteRenderer.sprite = _topRight;
+        else if (top && right && !left && !down)
+            _spriteRenderer.sprite = _bottomLeft;
+        else if (top && left && !right && !down)
+            _spriteRenderer.sprite = _bottomRight;
+
+        else if (top && right && down && !left)
+            _spriteRenderer.sprite = _middleLeft;
+        else if (left && down && right && !top)
+            _spriteRenderer.sprite = _topCenter;
+        else if (top && left && down && !right)
+            _spriteRenderer.sprite = _middleRight;
+        else if (left && top && right && !down)
+            _spriteRenderer.sprite = _bottomCenter;
+
+        //add others here
+        else
+            _spriteRenderer.color = Color.red;
+        if (_spriteRenderer.sprite == null)
+            _spriteRenderer.sprite = _middleCenter;
+
+    }
+    protected bool CompareTileTypeAt(Vector2 position)
+    {
+        Tile t = GridManager.Instance.GetTileAtPosition(position);
+        if(t == null || t._scriptableTile == _scriptableTile)
+            return true;
+        return false;
+    }
+
+    #endregion
+
 
     void IMouseInteractions.OnMouseHoverEnter()
     {

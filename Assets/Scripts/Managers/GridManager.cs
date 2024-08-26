@@ -8,6 +8,11 @@ public class GridManager : MonoBehaviour
 {
     public static GridManager Instance;
 
+    public static Vector2 GridUp = Vector2.down;
+    public static Vector2 GridDown = Vector2.up;
+    public static Vector2 GridLeft = Vector2.left;
+    public static Vector2 GridRight = Vector2.right;
+
     //Components
 
     //Inspector References
@@ -99,6 +104,8 @@ public class GridManager : MonoBehaviour
         FindBorderTiles();
         foreach (var tile in _tiles)
             tile.Value.NavigationNode.ConnectNeighboringTiles();
+        foreach (var tile in _tiles)
+            tile.Value.SelectSprite();
 
 
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);

@@ -107,4 +107,14 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 2703837010042837204}
   _highlight: {fileID: 1034285105158438520}
   _collision: {fileID: 2556920386819160770}
+  _collider: {fileID: 0}
   _scriptableTile: {fileID: 11400000, guid: 445c59bc0f106294b92d952b858aa108, type: 2}
+  _topLeft: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _topCenter: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _topRight: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _middleLeft: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _middleCenter: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _middleRight: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _bottomLeft: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _bottomCenter: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}
+  _bottomRight: {fileID: 7482667652216324306, guid: 311925a002f4447b3a28927169b83ea6, type: 3}

@@ -8,6 +8,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 761897088000232672, guid: 82f3ed372f2833643a556f0209216086, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
     - target: {fileID: 2399781850054847052, guid: 82f3ed372f2833643a556f0209216086, type: 3}
       propertyPath: m_Layer
       value: 0
@@ -99,4 +103,14 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 2818244235503404941}
   _highlight: {fileID: 919609049641869601}
   _collision: {fileID: 2442533020752553371}
+  _collider: {fileID: 0}
   _scriptableTile: {fileID: 11400000, guid: 33e117207250b404d95b96d2ad6d500a, type: 2}
+  _topLeft: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _topCenter: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _topRight: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _middleLeft: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _middleCenter: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _middleRight: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _bottomLeft: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _bottomCenter: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}
+  _bottomRight: {fileID: 21300000, guid: bb4fc50562da89d48b0278a771644a18, type: 3}

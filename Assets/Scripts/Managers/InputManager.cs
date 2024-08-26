@@ -29,7 +29,13 @@ public class InputManager : MonoBehaviour
 
     private void Awake()
     {
+        //if(Instance != null && Instance != this)
+        //{
+        //    Destroy(gameObject);
+        //    return;
+        //}
         Instance = this;
+        //DontDestroyOnLoad(gameObject);
 
         if(_camera == null)
             _camera = Camera.main;
@@ -78,7 +84,6 @@ public class InputManager : MonoBehaviour
         _graphicRaycaster.Raycast(_pointerEventData, results);
         if (results.Count > 0 || results == null)
             return;
-
 
         Vector2 worldMousePosition = _camera.ScreenToWorldPoint(_mousePosition);
         RaycastHit2D hit = Physics2D.Raycast(origin:worldMousePosition, direction:Vector2.zero, distance:1, layerMask:_mouseInteractable); //Change this to raycast all if problems with clicking towers

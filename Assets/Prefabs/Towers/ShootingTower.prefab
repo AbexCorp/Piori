@@ -53,12 +53,20 @@ PrefabInstance:
       value: ShootingTower
       objectReference: {fileID: 0}
     - target: {fileID: 8059565197019849570, guid: 97979808e6e9d1648a8af5119c6b9b5e, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: cad0ee94bfbb668458b291386f641da0, type: 3}
+    - target: {fileID: 8059565197019849570, guid: 97979808e6e9d1648a8af5119c6b9b5e, type: 3}
       propertyPath: m_Color.b
-      value: 0.71187955
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8059565197019849570, guid: 97979808e6e9d1648a8af5119c6b9b5e, type: 3}
       propertyPath: m_Color.g
-      value: 0.047058802
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8059565197019849570, guid: 97979808e6e9d1648a8af5119c6b9b5e, type: 3}
+      propertyPath: m_Color.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
