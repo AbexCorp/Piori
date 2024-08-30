@@ -79,15 +79,15 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
     #region >>> Building <<<
 
-    public void SetTower(BaseTower tower) //Move tower here
-    {
-        //if (tower.OccupiedTile != null) //If tile was set somwhere already, will be used when moving unit
-            //tower.OccupiedTile.OccupiedUnit = null;
+    //public void SetTower(BaseTower tower) //Move tower here
+    //{
+    //    //if (tower.OccupiedTile != null) //If tile was set somwhere already, will be used when moving unit
+    //        //tower.OccupiedTile.OccupiedUnit = null;
 
-        tower.transform.position = transform.position;
-        OccuppyingTower = tower;
-        tower.SetOccupiedTile(this);
-    }
+    //    tower.transform.position = transform.position;
+    //    OccuppyingTower = tower;
+    //    tower.SetOccupiedTile(this);
+    //}
     public void BuildTower(BaseTower towerPrefab)
     {
         BaseTower tower = TowerManager.Instance.SpawnTower(towerPrefab);
@@ -95,6 +95,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         OccuppyingTower = tower;
         tower.SetOccupiedTile(this);
         EnableCollisions(fullObstacle: BlocksBullets);
+        MenuManager.Instance.ShowTileHoverInfo(this);
     }
     //public BaseTower TakeTower() { } Move tower from here
     public void DestroyTower()
@@ -215,13 +216,13 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
     void IMouseInteractions.OnMouseHoverEnter()
     {
         _highlight?.SetActive(true);
-        MenuManager.Instance.ShowTileInfo(this);
+        MenuManager.Instance.ShowTileHoverInfo(this);
     }
 
     void IMouseInteractions.OnMouseHoverLeave()
     {
         _highlight?.SetActive(false);
-        MenuManager.Instance.ShowTileInfo(null);
+        MenuManager.Instance.ShowTileHoverInfo(null);
     }
 
     void IMouseInteractions.OnMouseLeftClick(InputAction.CallbackContext context)
@@ -256,7 +257,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             }
             BuildTower(TowerManager.Instance.SelectedTowerPrefabToBuy);
             GridManager.Instance.OnMapChange?.Invoke();
-            MenuManager.Instance.ClearTower();
+            MenuManager.Instance.StopAllCommands();
         }
     }
 

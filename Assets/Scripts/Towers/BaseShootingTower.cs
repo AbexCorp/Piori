@@ -86,13 +86,13 @@ public class BaseShootingTower : BaseTower
         _target.GetDamaged(Damage);
 
         _attackIsOnCooldown = true;
-        _spriteRenderer.color = Color.blue;
+        _spriteRenderer.color = Color.gray;
         StartCoroutine(StartAttackCooldown());
     }
     protected IEnumerator StartAttackCooldown()
     {
         yield return new WaitForSeconds(AttackSpeed);
-        _spriteRenderer.color = Color.cyan;
+        _spriteRenderer.color = Color.white;
         _attackIsOnCooldown = false;
     }
 

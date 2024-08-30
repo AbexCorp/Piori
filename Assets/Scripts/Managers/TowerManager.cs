@@ -6,10 +6,13 @@ public class TowerManager : MonoBehaviour
 {
     public static TowerManager Instance;
 
+
+    public bool IsSelling { get; private set; }
+    public bool IsBuying => SelectedTowerPrefabToBuy == true;
+
     //Building
     public BaseTower SelectedTowerPrefabToBuy;
     public BaseTower SelectedTowerOnMap;
-    public bool IsSelling = false;
 
     private void Awake()
     {
