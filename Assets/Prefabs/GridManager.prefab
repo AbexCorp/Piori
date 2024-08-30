@@ -44,8 +44,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c662541d421cfa4086dd17bd5ac07c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _width: 10
-  _height: 10
-  _cameraPosition: {fileID: 0}
-  _groundTile: {fileID: -6954842919840259289, guid: db49f2b373682294a9c7cf287f883245, type: 3}
-  _wallTile: {fileID: 57426435696402620, guid: 66781ec0ca7fcbd4a9b353cc0b36845b, type: 3}
+  _camera: {fileID: 0}
+  _mapWallPrefab: {fileID: 7870444407015226634, guid: 95f81283441dc774f9086b6c7d823145, type: 3}
+  LoadedMap: {fileID: 0}

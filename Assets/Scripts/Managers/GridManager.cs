@@ -18,6 +18,8 @@ public class GridManager : MonoBehaviour
     //Inspector References
     [SerializeField]
     private Camera _camera;
+    [SerializeField]
+    private GameObject _mapWallPrefab;
 
     //Code References
     [HideInInspector]
@@ -97,6 +99,20 @@ public class GridManager : MonoBehaviour
             _borderTiles.Add(GetTileAtPosition(new Vector2(LoadedMap.Width -1, y)));
         }
     }
+    private void AddMapBoundries()
+    {
+        foreach(var tile in _borderTiles)
+        {
+            if (GetTileAtPosition(tile.TileCoordinates.GridPosition + GridUp) == null)
+                Instantiate(_mapWallPrefab, tile.TileCoordinates.WorldPosition + Vector2.up, Quaternion.identity);
+            if (GetTileAtPosition(tile.TileCoordinates.GridPosition + GridDown) == null)
+                Instantiate(_mapWallPrefab, tile.TileCoordinates.WorldPosition + Vector2.down, Quaternion.identity);
+            if (GetTileAtPosition(tile.TileCoordinates.GridPosition + GridLeft) == null)
+                Instantiate(_mapWallPrefab, tile.TileCoordinates.WorldPosition + Vector2.left, Quaternion.identity);
+            if (GetTileAtPosition(tile.TileCoordinates.GridPosition + GridRight) == null)
+                Instantiate(_mapWallPrefab, tile.TileCoordinates.WorldPosition + Vector2.right, Quaternion.identity);
+        }
+    }
 
     public void GenerateGrid()
     {
@@ -106,6 +122,7 @@ public class GridManager : MonoBehaviour
             tile.Value.NavigationNode.ConnectNeighboringTiles();
         foreach (var tile in _tiles)
             tile.Value.SelectSprite();
+        AddMapBoundries();
 
 
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);
