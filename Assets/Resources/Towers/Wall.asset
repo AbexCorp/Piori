@@ -21,3 +21,4 @@ MonoBehaviour:
   _baseAttackSpeed: 0
   _baseDamage: 0
   _baseRange: 0
+  _cost: 5

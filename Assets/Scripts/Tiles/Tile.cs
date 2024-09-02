@@ -236,6 +236,7 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             if (IsBuildable || OccuppyingTower == null)
                 return;
 
+            TowerManager.Instance.ChangeCurrency( (int)(TowerManager.TowerSellingReturnPercentage * (float)OccuppyingTower.Cost) / 100 );
             DestroyTower();
             GridManager.Instance.OnMapChange?.Invoke();
             MenuManager.Instance.StopSelling();
@@ -247,16 +248,19 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
 
             if(BuildingHereCreatesEnclosedArea())
             {
-                Debug.LogWarning("Cannot create enclosed spaces");
+                //Debug.LogWarning("Cannot create enclosed spaces");
+                MenuManager.Instance.ShowWarning("Cannot create enclosed spaces");
                 return;
             }
             if (BuildingIsObstructedByPlayerOrEnemy())
             {
-                Debug.LogWarning("Blocked by player or enemy");
+                //Debug.LogWarning("Blocked by player or enemy");
+                MenuManager.Instance.ShowWarning("Space blocked by player or enemy");
                 return;
             }
             BuildTower(TowerManager.Instance.SelectedTowerPrefabToBuy);
             GridManager.Instance.OnMapChange?.Invoke();
+            TowerManager.Instance.ChangeCurrency( -TowerManager.Instance.SelectedTowerPrefabToBuy.Cost );
             MenuManager.Instance.StopAllCommands();
         }
     }

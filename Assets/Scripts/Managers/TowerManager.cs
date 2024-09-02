@@ -10,18 +10,30 @@ public class TowerManager : MonoBehaviour
     public bool IsSelling { get; private set; }
     public bool IsBuying => SelectedTowerPrefabToBuy == true;
 
+
     //Building
     public BaseTower SelectedTowerPrefabToBuy;
     public BaseTower SelectedTowerOnMap;
 
+    public int Currency { get; private set; }
+    public const int TowerSellingReturnPercentage = 30;
+
+
+
     private void Awake()
     {
         Instance = this;
+        Currency = 0;
     }
 
     public BaseTower SpawnTower(BaseTower towerPrefab)
     {
         return Instantiate(towerPrefab);
+    }
+    public void ChangeCurrency(int amount)
+    {
+        Currency += amount;
+        MenuManager.Instance.UpdateCurrency();
     }
 
 

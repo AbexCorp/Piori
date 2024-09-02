@@ -34,6 +34,9 @@ public class GridManager : MonoBehaviour
     public Action OnMapChange;
 
 
+    
+
+
 
     private void Awake()
     {
@@ -123,6 +126,7 @@ public class GridManager : MonoBehaviour
         foreach (var tile in _tiles)
             tile.Value.SelectSprite();
         AddMapBoundries();
+        TowerManager.Instance.ChangeCurrency(LoadedMap.StartingCurrency);
 
 
         ////GameManager.Instance.ChangeState(GameState.SpawnHeroes);

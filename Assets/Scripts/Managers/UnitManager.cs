@@ -9,11 +9,22 @@ public class UnitManager : MonoBehaviour
 
     private List<ScriptableEnemy> _scriptableEnemies;
 
+    public int EnemyCount { get; set; }
+
 
     private void Awake()
     {
         Instance = this;
-        _scriptableEnemies = Resources.LoadAll<ScriptableEnemy>("Units/Enemies").ToList(); //Load all sunits from resource folder
+        _scriptableEnemies = Resources.LoadAll<ScriptableEnemy>("Units/Enemies").ToList();
+        EnemyCount = 0;
+    }
+
+    public BaseEnemy SpawnEnemy()
+    {
+        BaseEnemy enemy = Instantiate(_scriptableEnemies.FirstOrDefault().EnemyPrefab);
+        enemy.transform.position = GridManager.Instance.GetRandomBorderTileWalkable().TileCoordinates.WorldPosition;
+        EnemyCount++;
+        return enemy;
     }
 
     

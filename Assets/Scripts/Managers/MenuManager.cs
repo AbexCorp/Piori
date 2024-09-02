@@ -71,7 +71,7 @@ public class MenuManager : MonoBehaviour
     #endregion
 
 
-    //This will show the tower that is beeing bought and also hide other ui and show cancel button
+    //Shows tower buy menu as well as cancel buttons.
     #region ButtonBars
 
     [Space]
@@ -126,6 +126,45 @@ public class MenuManager : MonoBehaviour
     #endregion
 
 
+    #region Other
+
+    [Header("Other")]
+    [Space]
+    [Space]
+    [SerializeField]
+    private GameObject _currencyGameObject;
+    [SerializeField]
+    private TMP_Text _currencyText;
+
+    public void UpdateCurrency()
+    {
+        _currencyText.text = $"$:{TowerManager.Instance.Currency}";
+    }
+
+    [Space]
+    [Space]
+    [SerializeField]
+    private GameObject _warningWindowGameObject;
+    [SerializeField]
+    private TMP_Text _warningText;
+    private Coroutine _warningTimerCoroutine;
+    public void ShowWarning(string warning)
+    {
+        if (_warningTimerCoroutine != null)
+            StopCoroutine(_warningTimerCoroutine);
+        _warningWindowGameObject.SetActive(true);
+        _warningText.text = warning;
+        _warningTimerCoroutine = StartCoroutine(WarningTimer());
+    }
+    private IEnumerator WarningTimer()
+    {
+        yield return new WaitForSeconds(2.5f);
+        _warningWindowGameObject.SetActive(false);
+    }
+
+    #endregion
+
+
     //ui commands
 
     //Cancels all instructions like buying and returns ui to normal
@@ -140,6 +179,12 @@ public class MenuManager : MonoBehaviour
     //Called by buttons
     public void StartBuyingTower(BaseTower towerPrefab)
     {
+        if(towerPrefab.Cost > TowerManager.Instance.Currency)
+        {
+            //Debug.LogWarning("Not enough money");
+            ShowWarning("Not enough money");
+            return;
+        }
         TowerManager.Instance.SelectTowerToBuy(towerPrefab);
         ShowTowerBuying();
     }
@@ -159,22 +204,4 @@ public class MenuManager : MonoBehaviour
         TowerManager.Instance.StopSelling();
         ShowTowerBuying();
     }
-
-
-
-    /*
-
-    public void StartSelling()
-    {
-        if(TowerManager.Instance.IsSelling == true)
-        {
-            StopSelling();
-            return;
-        }
-        TowerManager.Instance.StartSelling();
-        _selectedTowerToBuyObject.GetComponentInChildren<Text>().text = $"Selling";
-        _selectedTowerToBuyObject.SetActive(true);
-    }
-
-    */
 }

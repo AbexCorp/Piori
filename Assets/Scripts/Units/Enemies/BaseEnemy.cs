@@ -25,6 +25,7 @@ public abstract class BaseEnemy : MonoBehaviour
     //Fields & Properties
     public string Name => ScriptableEnemy.Name;
     public int PointCost => ScriptableEnemy.PointCost;
+    public int CurrencyOnKill => ScriptableEnemy.CurrencyOnKill;
     public float Speed => ScriptableEnemy.Speed;
     public int Health => ScriptableEnemy.Health;
     public int CurrentHealth => _currentHealth;
@@ -142,13 +143,19 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         _currentHealth -= damage;
         if (_currentHealth <= 0)
-            Destroy(gameObject);
+            Die();
         UpdateHealthBar();
     }
     protected void UpdateHealthBar()
     {
         _canvas.SetActive(true);
         _healthBar.fillAmount = CurrentHealth / (float)Health;
+    }
+    protected void Die()
+    {
+        UnitManager.Instance.EnemyCount--;
+        TowerManager.Instance.ChangeCurrency(CurrencyOnKill);
+        Destroy(gameObject);
     }
 
 

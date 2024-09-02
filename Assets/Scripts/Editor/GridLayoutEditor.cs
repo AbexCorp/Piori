@@ -85,6 +85,7 @@ public class GridLayoutEditor : EditorWindow
         }
 
         _gridLayout.SpawnPosition = EditorGUILayout.Vector2IntField("Spawn Position", _gridLayout.SpawnPosition);
+        _gridLayout.StartingCurrency = EditorGUILayout.IntField("Starting Currency", _gridLayout.StartingCurrency);
 
         if (GUILayout.Button("Save Layout"))
         {

@@ -12,6 +12,10 @@ public class BaseTower : MonoBehaviour
     [SerializeField]
     protected ScriptableTower _scriptableTower;
 
+    public string TowerName => _scriptableTower.TowerName;
+    public int Cost => _scriptableTower.Cost;
+
+
     //Code References
     public Tile OccupiedTile { get; protected set; }
 

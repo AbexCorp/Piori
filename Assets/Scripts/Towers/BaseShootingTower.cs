@@ -14,7 +14,6 @@ public class BaseShootingTower : BaseTower
     protected float DamageModifier = 1.00f;
     protected float RangeModifier = 1.00f;
 
-    public string TowerName => _scriptableTower.TowerName;
     public float BaseAttackSpeed => _scriptableTower.BaseAttackSpeed;
     public int BaseDamage => _scriptableTower.BaseDamage;
     public float BaseRange => _scriptableTower.BaseRange;

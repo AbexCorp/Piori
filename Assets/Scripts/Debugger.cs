@@ -6,8 +6,8 @@ using UnityEngine;
 public class Debugger : MonoBehaviour
 {
     private List<ScriptableEnemy> _scriptableEnemies;
-    int counter = 0;
-    int cooldown = 2020;
+    //int counter = 0;
+    //int cooldown = 2020;
 
     private void Awake()
     {
@@ -16,28 +16,17 @@ public class Debugger : MonoBehaviour
 
     void Update()
     {
-        counter++;
-        if (counter > cooldown)
-        {
-            counter = 0;
-            if(cooldown - 30 > 20)
-                cooldown -= 30;
-            else
-                cooldown = 20;
-            Spawn();
-        }
+        //counter++;
+        //if (counter > cooldown)
+        //{
+        //    counter = 0;
+        //    if(cooldown - 30 > 20)
+        //        cooldown -= 30;
+        //    else
+        //        cooldown = 20;
+        //    UnitManager.Instance.SpawnEnemy();
+        //}
+        if(UnitManager.Instance.EnemyCount < 400)
+            UnitManager.Instance.SpawnEnemy();
     }
-    private void Spawn()
-    {
-        BaseEnemy enemy = Instantiate(_scriptableEnemies.FirstOrDefault().EnemyPrefab);
-        enemy.transform.position = GridManager.Instance.GetRandomBorderTileWalkable().TileCoordinates.WorldPosition;
-    }
-    //public void BuildTower(BaseTower towerPrefab)
-    //{
-    //    BaseTower tower = TowerManager.Instance.SpawnTower(towerPrefab);
-    //    tower.transform.position = transform.position;
-    //    OccuppyingTower = tower;
-    //    tower.OccupiedTile = this;
-    //    EnableCollisions(fullObstacle: BlocksBullets);
-    //}
 }

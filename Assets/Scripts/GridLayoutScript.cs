@@ -9,7 +9,8 @@ public class GridLayoutScript : ScriptableObject
     public int Height;
     public TileType[] Tiles;
 
-    public Vector2Int SpawnPosition;
+    public Vector2Int SpawnPosition = Vector2Int.zero;
+    public int StartingCurrency = 60;
 
 
     public TileType GetTile(int y, int x)

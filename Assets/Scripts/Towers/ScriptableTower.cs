@@ -28,6 +28,9 @@ public class ScriptableTower : ScriptableObject
     [SerializeField]
     private float _baseRange;
 
+    [SerializeField]
+    private int _cost = 20;
+
     //public bool ShootsProjectile;
     //public Projectile ProjectilePrefab
 
@@ -45,6 +48,8 @@ public class ScriptableTower : ScriptableObject
     public float BaseAttackSpeed { get { return _baseAttackSpeed; } }
     public int BaseDamage { get { return _baseDamage; } }
     public float BaseRange { get { return _baseRange; } }
+
+    public int Cost { get { return _cost; } }
 }
 
 
