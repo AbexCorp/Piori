@@ -153,7 +153,7 @@ public abstract class BaseEnemy : MonoBehaviour
     }
     protected void Die()
     {
-        UnitManager.Instance.EnemyCount--;
+        UnitManager.Instance.SpawnedEnemies.Remove(this);
         TowerManager.Instance.ChangeCurrency(CurrencyOnKill);
         Destroy(gameObject);
     }

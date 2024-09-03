@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,22 +9,22 @@ public class UnitManager : MonoBehaviour
     public static UnitManager Instance;
 
     private List<ScriptableEnemy> _scriptableEnemies;
+    public List<BaseEnemy> SpawnedEnemies { get; private set; }
 
-    public int EnemyCount { get; set; }
 
 
     private void Awake()
     {
         Instance = this;
         _scriptableEnemies = Resources.LoadAll<ScriptableEnemy>("Units/Enemies").ToList();
-        EnemyCount = 0;
+        SpawnedEnemies = new();
     }
 
     public BaseEnemy SpawnEnemy()
     {
         BaseEnemy enemy = Instantiate(_scriptableEnemies.FirstOrDefault().EnemyPrefab);
         enemy.transform.position = GridManager.Instance.GetRandomBorderTileWalkable().TileCoordinates.WorldPosition;
-        EnemyCount++;
+        SpawnedEnemies.Add(enemy);
         return enemy;
     }
 

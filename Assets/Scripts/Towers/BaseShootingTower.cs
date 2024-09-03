@@ -2,14 +2,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(CircleCollider2D))]
 public class BaseShootingTower : BaseTower
 {
-    //Components
-    [SerializeField]
-    protected CircleCollider2D _circleCollider;
-
-
     protected float AttackSpeedModifier = 1.00f;
     protected float DamageModifier = 1.00f;
     protected float RangeModifier = 1.00f;
@@ -25,57 +19,67 @@ public class BaseShootingTower : BaseTower
 
     protected BaseEnemy _target = null;
     protected bool _attackIsOnCooldown = false;
+    protected int _obstacleLayer = 0;
 
 
     protected void Awake()
     {
-        if(_circleCollider == null)
-            _circleCollider = GetComponent<CircleCollider2D>();
-        _circleCollider.isTrigger = true;
-        _circleCollider.radius = Range;
+        //if(_circleCollider == null)
+        //    _circleCollider = GetComponent<CircleCollider2D>();
+        //_circleCollider.isTrigger = true;
+        //_circleCollider.radius = Range;
+        _obstacleLayer = LayerMask.GetMask("ObstacleFull");
+        StartCoroutine(Targeting());
     }
 
 
-
-    protected void OnTriggerStay2D(Collider2D collision)
+    protected IEnumerator Targeting()
     {
-        if(_attackIsOnCooldown)
-            return;
-        if (_target != null && collision.gameObject != _target.gameObject)
-            return;
+        YieldInstruction yield = new WaitForSeconds(0.075f);
+        yield return new WaitForEndOfFrame();
 
-        FindTarget(collision);
-        Attack();
-    }
-    protected void OnTriggerExit2D(Collider2D collision)
-    {
-        if(_target == null)
-            return;
-        if (collision.gameObject == _target.gameObject)
-            _target = null;
-    }
-
-    protected void FindTarget(Collider2D collision)
-    {
-        if (_target == null)
+        while (true)
         {
-            collision.TryGetComponent<BaseEnemy>(out BaseEnemy enemy);
-            _target = enemy;
+            if (_target != null)
+                CheckIfTargetIsCorrect(_target.gameObject);
+            else
+            {
+                foreach (var enemy in UnitManager.Instance.SpawnedEnemies)
+                {
+                    if (CheckIfTargetIsCorrect(enemy.gameObject))
+                    {
+                        _target = enemy;
+                        break;
+                    }
+                    //else
+                    //    yield return null;
+                }
+            }
+            Attack();
+            yield return yield;
         }
-        if (_target == null)
-            return;
-
+    }
+    protected bool CheckIfTargetIsCorrect(GameObject target)
+    {
+        float distance = Vector2.Distance(transform.position, target.transform.position);
+        if(distance > BaseRange)
+        {
+            _target = null;
+            return false;
+        }
         RaycastHit2D hit = Physics2D.Raycast
         (
             origin: gameObject.transform.position, 
-            direction: collision.gameObject.transform.position - gameObject.transform.position, 
-            distance: Vector2.Distance(gameObject.transform.position, collision.gameObject.transform.position),
-            layerMask: LayerMask.GetMask(new string[] {"Enemy", "ObstacleFull"})
+            direction: target.transform.position - gameObject.transform.position, 
+            distance: distance,
+            layerMask: _obstacleLayer
         );
-        if (!hit)
-            return;
-        if (hit.collider.gameObject.layer != LayerMask.NameToLayer("Enemy"))
+        if(hit)
+        {
             _target = null;
+            return false;
+        }
+        return true;
     }
     protected void Attack()
     {
@@ -98,7 +102,7 @@ public class BaseShootingTower : BaseTower
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(transform.position, _circleCollider.radius);
+        Gizmos.DrawWireSphere(transform.position, BaseRange);
 
         if (_target == null) 
             return;
