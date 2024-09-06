@@ -162,6 +162,18 @@ public class MenuManager : MonoBehaviour
         _warningWindowGameObject.SetActive(false);
     }
 
+    [Space]
+    [Space]
+    [SerializeField]
+    private UnityEngine.UI.Image _playerHealth;
+    [SerializeField]
+    private TMP_Text _healthBarText;
+    public void UpdatePlayerHealth()
+    {
+        _playerHealth.fillAmount = PlayerController.Instance.CurrentHealth / (float)PlayerController.Instance.MaxHealth;
+        _healthBarText.text = $"{PlayerController.Instance.CurrentHealth}/{PlayerController.Instance.MaxHealth}";
+    }
+
     #endregion
 
 

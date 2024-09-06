@@ -44,6 +44,13 @@ public class GameManager : MonoBehaviour
             
         }
     }
+
+    public void LoseGame()
+    {
+        MenuManager.Instance.ShowWarning("You Lose");
+        Debug.LogWarning("Lost game");
+        Debug.Break();
+    }
 }
 
 public enum GameState

@@ -6,6 +6,9 @@ using UnityEngine;
 
 public abstract class BaseEnemy : MonoBehaviour
 {
+    public ScriptableEnemy ScriptableEnemy;
+
+
     //Components
     [SerializeField]
     protected Rigidbody2D _rigidBody;
@@ -16,7 +19,6 @@ public abstract class BaseEnemy : MonoBehaviour
     protected UnityEngine.UI.Image _healthBar;
 
     //Inspector References
-    public ScriptableEnemy ScriptableEnemy;
 
 
     //Code References
@@ -31,8 +33,12 @@ public abstract class BaseEnemy : MonoBehaviour
     public int CurrentHealth => _currentHealth;
     public int Damage => ScriptableEnemy.Damage;
     public float AttackSpeed => ScriptableEnemy.AttackSpeed;
+    public float AttackRange => ScriptableEnemy.AttackRange;
+    public bool AttackIsRanged => ScriptableEnemy.AttackIsRanged;
+    public bool StopsMovingOnAttackCooldown => ScriptableEnemy.StopsMovingOnAttackCooldown;
 
     //Pathfinding
+    protected float _pathfindingFrequency = 0.25f;
     protected List<NavigationNode> _pathToPlayer = new();
     protected Tile _position;
     protected Vector2 _destination;
@@ -41,7 +47,10 @@ public abstract class BaseEnemy : MonoBehaviour
     protected bool _mapChanged = true;
     protected bool _switchedTile = true;
 
+    //Combat
+    protected float _attackCheckFrequency = 0.05f;
     protected int _currentHealth = 1;
+    protected bool _attackIsOnCooldown = false;
 
 
     protected void Awake()
@@ -53,11 +62,13 @@ public abstract class BaseEnemy : MonoBehaviour
 
         _currentHealth = Health;
 
-        StartCoroutine(Pathfind());
+        //StartCoroutine(Pathfind());
     }
     protected void Start()
     {
-        Pathfind();
+        _distanceToPlayer = Vector2.Distance(transform.position, PlayerController.Instance.Position);
+        StartCoroutine(Pathfind());
+        StartCoroutine(TargetPlayer());
         _canvas.SetActive(false);
     }
     protected void Update()
@@ -71,7 +82,7 @@ public abstract class BaseEnemy : MonoBehaviour
 
     protected IEnumerator Pathfind()
     {
-        YieldInstruction yield = new WaitForSeconds(0.25f);
+        YieldInstruction yield = new WaitForSeconds(_pathfindingFrequency);
         while (true)
         {
             FindPath();
@@ -111,7 +122,7 @@ public abstract class BaseEnemy : MonoBehaviour
     }
     protected void Move()
     {
-        if(_pathToPlayer == null || _pathToPlayer.Count == 0)
+        if(_pathToPlayer == null || _pathToPlayer.Count == 0 || (StopsMovingOnAttackCooldown && _attackIsOnCooldown))
         {
             _rigidBody.velocity = Vector2.zero;
             return;
@@ -139,6 +150,8 @@ public abstract class BaseEnemy : MonoBehaviour
     #endregion
 
 
+    #region >>> Combat <<<
+    
     public void GetDamaged(int damage)
     {
         _currentHealth -= damage;
@@ -157,6 +170,32 @@ public abstract class BaseEnemy : MonoBehaviour
         TowerManager.Instance.ChangeCurrency(CurrencyOnKill);
         Destroy(gameObject);
     }
+    private IEnumerator TargetPlayer()
+    {
+        YieldInstruction yield = new WaitForSeconds(1);
+        while (true)
+        {
+            if (_distanceToPlayer < AttackRange && !_attackIsOnCooldown)
+                AttackPlayer();
+
+            yield return yield;
+        }
+    }
+    private void AttackPlayer()
+    {
+        if (_attackIsOnCooldown || _distanceToPlayer > AttackRange)
+            return;
+        PlayerController.Instance.DamagePlayer(Damage);
+        _attackIsOnCooldown = true;
+        StartCoroutine(AttackCooldown());
+    }
+    private IEnumerator AttackCooldown()
+    {
+        yield return new WaitForSeconds(AttackSpeed);
+        _attackIsOnCooldown = false;
+    }
+
+    #endregion
 
 
     private void OnDrawGizmos()

@@ -13,10 +13,13 @@ MonoBehaviour:
   m_Name: Enemy
   m_EditorClassIdentifier: 
   _enemyPrefab: {fileID: 4099445705584312349, guid: dd589bf88b2a5f24f85bee0013f05fbe, type: 3}
-  _name: NOT SET
+  _name: TempEnemy
   _pointCost: 1
   _currencyOnKill: 4
   _speed: 1
   _health: 8
-  _damage: 1
+  _damage: 15
   _attackSpeed: 1
+  _attackRange: 1
+  _attackIsRanged: 0
+  _stopsMovingOnAttackCooldown: 1

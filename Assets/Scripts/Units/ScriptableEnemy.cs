@@ -8,6 +8,7 @@ public class ScriptableEnemy : ScriptableObject
     [SerializeField]
     private BaseEnemy _enemyPrefab;
 
+    [Space]
     [SerializeField]
     private string _name = "NOT SET";
     [SerializeField]
@@ -15,15 +16,23 @@ public class ScriptableEnemy : ScriptableObject
     [SerializeField]
     private int _currencyOnKill = 1;
 
+    [Space]
     [SerializeField]
     private float _speed = 1;
     [SerializeField]
     private int _health = 1;
 
+    [Space]
     [SerializeField]
     private int _damage = 1;
     [SerializeField]
     private float _attackSpeed = 1;
+    [SerializeField]
+    private float _attackRange = 1;
+    [SerializeField]
+    private bool _attackIsRanged = false;
+    [SerializeField]
+    private bool _stopsMovingOnAttackCooldown = false;
 
 
     public BaseEnemy EnemyPrefab => _enemyPrefab;
@@ -38,4 +47,7 @@ public class ScriptableEnemy : ScriptableObject
 
     public int Damage => _damage;
     public float AttackSpeed => _attackSpeed;
+    public float AttackRange => _attackRange;
+    public bool AttackIsRanged => _attackIsRanged;
+    public bool StopsMovingOnAttackCooldown => _stopsMovingOnAttackCooldown;
 }

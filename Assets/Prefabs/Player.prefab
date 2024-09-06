@@ -103,6 +103,7 @@ MonoBehaviour:
   _spriteRenderer: {fileID: 3738234322364883549}
   _rigidBody: {fileID: 1008089971543384441}
   _moveSpeed: 2
+  _maxHealth: 500
 --- !u!114 &2125424668611061249
 MonoBehaviour:
   m_ObjectHideFlags: 0

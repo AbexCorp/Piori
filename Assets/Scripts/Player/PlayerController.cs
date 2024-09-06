@@ -21,7 +21,13 @@ public class PlayerController : MonoBehaviour
     [SerializeField]
     [Range(1f, 3f)]
     private float _moveSpeed = 1;
-    [HideInInspector]
+
+    [SerializeField]
+    [Range(100f, 1000f)]
+    private int _maxHealth = 100;
+    public int MaxHealth => _maxHealth;
+    public int CurrentHealth { get; private set; }
+
     public Vector2 Position => transform.position;
 
     private Vector2 _movement;
@@ -34,6 +40,12 @@ public class PlayerController : MonoBehaviour
             _spriteRenderer = GetComponent<SpriteRenderer>();
         if( _rigidBody == null)
             _rigidBody = GetComponent<Rigidbody2D>();
+
+        CurrentHealth = MaxHealth;
+    }
+    private void Start()
+    {
+        MenuManager.Instance.UpdatePlayerHealth();
     }
 
     void Update()
@@ -76,4 +88,28 @@ public class PlayerController : MonoBehaviour
             GridManager.Instance.SetPlayerTile(tile);
         }
     }
+
+
+    public void DamagePlayer(int damage)
+    {
+        CurrentHealth -= damage;
+        if (CurrentHealth < 0)
+        {
+            CurrentHealth = 0;
+            MenuManager.Instance.UpdatePlayerHealth();
+            Die();
+            return;
+        }
+        MenuManager.Instance.UpdatePlayerHealth();
+    }
+    public void HealPlayer(int heal)
+    {
+        CurrentHealth = CurrentHealth + heal > MaxHealth ? MaxHealth : CurrentHealth + heal;
+        MenuManager.Instance.UpdatePlayerHealth();
+    }
+    private void Die()
+    {
+        GameManager.Instance.LoseGame();
+    }
+
 }
