@@ -49,6 +49,7 @@ MonoBehaviour:
   _mouseInteractable:
     serializedVersion: 2
     m_Bits: 256
+  _graphicRaycaster: {fileID: 0}
 --- !u!114 &53887197206256168
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -106,6 +107,22 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 6584b3d5-f725-402c-9ffc-576f2fe88fcf
     m_ActionName: Player/MousePosition[/Mouse/position]
+  - m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 6996272177745143588}
+        m_TargetAssemblyTypeName: InputManager, Assembly-CSharp
+        m_MethodName: OnMovement
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+    m_ActionId: 288bca0a-f3ad-4284-960e-7135b8d5469f
+    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: MouseKeyboard
   m_DefaultActionMap: Player

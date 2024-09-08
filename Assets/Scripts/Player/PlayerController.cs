@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     }
     private void Start()
     {
+        InputManager.Instance.OnMovementSubscribe(OnMove);
         MenuManager.Instance.UpdatePlayerHealth();
     }
 

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 2935917661101841761}
   - component: {fileID: 3738234322364883549}
   - component: {fileID: 4364574274731207051}
-  - component: {fileID: 2125424668611061249}
   - component: {fileID: 1008089971543384441}
   - component: {fileID: 780176213610711892}
   m_Layer: 7
@@ -104,60 +103,6 @@ MonoBehaviour:
   _rigidBody: {fileID: 1008089971543384441}
   _moveSpeed: 2
   _maxHealth: 500
---- !u!114 &2125424668611061249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1545626743087608693}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  m_Actions: {fileID: -944628639613478452, guid: 8b60ab4b5d3fdd5498867436e9e43b71, type: 3}
-  m_NotificationBehavior: 2
-  m_UIInputModule: {fileID: 0}
-  m_DeviceLostEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_DeviceRegainedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ControlsChangedEvent:
-    m_PersistentCalls:
-      m_Calls: []
-  m_ActionEvents:
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 66ddd0a4-67ad-4bcd-96c6-51a444b413cb
-    m_ActionName: Player/LeftClick[/Mouse/press]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 6584b3d5-f725-402c-9ffc-576f2fe88fcf
-    m_ActionName: Player/MousePosition[/Mouse/position]
-  - m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 4364574274731207051}
-        m_TargetAssemblyTypeName: PlayerController, Assembly-CSharp
-        m_MethodName: OnMove
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-    m_ActionId: 288bca0a-f3ad-4284-960e-7135b8d5469f
-    m_ActionName: Player/Movement[/Keyboard/w,/Keyboard/s,/Keyboard/a,/Keyboard/d]
-  m_NeverAutoSwitchControlSchemes: 0
-  m_DefaultControlScheme: 
-  m_DefaultActionMap: Player
-  m_SplitScreenIndex: -1
-  m_Camera: {fileID: 0}
 --- !u!50 &1008089971543384441
 Rigidbody2D:
   serializedVersion: 4
