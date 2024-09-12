@@ -48,29 +48,40 @@ public class InputManager : MonoBehaviour
     #endregion
 
     #region OnMouseLeftClick
+
+    private event Action<InputAction.CallbackContext> _onMouseLeftClickEvent;
     
     [SerializeField]
     private GraphicRaycaster _graphicRaycaster;
     private PointerEventData _pointerEventData;
     public void OnMouseLeftClick(InputAction.CallbackContext context)
     {
-        _pointerEventData.position = _mousePosition;
-        List<RaycastResult> results = new();
-        _graphicRaycaster.Raycast(_pointerEventData, results);
-        if (results.Count > 0 || results == null)
-            return;
+        _onMouseLeftClickEvent?.Invoke(context);
 
-        Vector2 worldMousePosition = _camera.ScreenToWorldPoint(_mousePosition);
-        RaycastHit2D hit = Physics2D.Raycast(origin:worldMousePosition, direction:Vector2.zero, distance:1, layerMask:_mouseInteractable); //Change this to raycast all if problems with clicking towers
-
-        if (hit)
+        if (context.performed)
         {
-            hit.collider.gameObject.TryGetComponent<IMouseInteractions>(out IMouseInteractions clickable);
-            if(clickable != null)
+            _pointerEventData.position = _mousePosition;
+            List<RaycastResult> results = new();
+            _graphicRaycaster.Raycast(_pointerEventData, results);
+            if (results.Count > 0 || results == null)
+                return;
+
+            Vector2 worldMousePosition = _camera.ScreenToWorldPoint(_mousePosition);
+            RaycastHit2D hit = Physics2D.Raycast(origin:worldMousePosition, direction:Vector2.zero, distance:1, layerMask:_mouseInteractable); //Change this to raycast all if problems with clicking towers
+
+            if (hit)
             {
-                clickable?.OnMouseLeftClick(context);
+                hit.collider.gameObject.TryGetComponent<IMouseInteractions>(out IMouseInteractions clickable);
+                if(clickable != null)
+                {
+                    clickable?.OnMouseLeftClick(context);
+                }
             }
         }
+    }
+    public void OnMouseLeftClickSubscribe(Action<InputAction.CallbackContext> sub)
+    {
+        _onMouseLeftClickEvent += sub;
     }
 
     #endregion

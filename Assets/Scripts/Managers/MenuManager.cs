@@ -4,18 +4,33 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.UI;
-using static MenuManager;
 
 public class MenuManager : MonoBehaviour
 {
     public static MenuManager Instance;
 
 
+    [SerializeField]
+    private Canvas _canvas;
+    [SerializeField]
+    private RectTransform _canvasRectTransform;
+
+
     private void Awake()
     {
         Instance = this;
     }
+    private void Start()
+    {
+        InputManager.Instance.OnMouseLeftClickSubscribe(OnLeftClick);
+    }
+    private void Update()
+    {
+        UpdateTooltipPosition();
+    }
+
 
 
     //Shows information about the tile under the cursor. Shows terrain type, tile info, and tower built on it
@@ -126,11 +141,52 @@ public class MenuManager : MonoBehaviour
     #endregion
 
 
+    #region MouseFloatingTooltip
+
+    [Space]
+    [Space]
+    [Header("Mouse Floating Tooltip")]
+    [SerializeField]
+    private RectTransform _tooltipObjectTransform;
+    [SerializeField]
+    private TMP_Text _tooltipText;
+    public void ShowMouseTooltip(string text)
+    {
+        _tooltipText.text = text;
+        _tooltipObjectTransform.gameObject.SetActive(true);
+    }
+    public void HideMouseTooltip()
+    {
+        _tooltipObjectTransform.gameObject.SetActive(false);
+    }
+    private void UpdateTooltipPosition()
+    {
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(_canvasRectTransform, InputManager.Instance.MousePosition, null, out Vector2 pos);
+        _tooltipObjectTransform.anchoredPosition = pos + new Vector2((_tooltipObjectTransform.rect.width/2) + 6, (-_tooltipObjectTransform.rect.height/2) - 6);
+
+        Vector3[] corners = new Vector3[4];
+        Vector3[] canvasCorners = new Vector3[4];
+        // [0] bottom left, [1] top left, [2] top right, [3] bottom right
+        _tooltipObjectTransform.GetWorldCorners(corners);
+        _canvasRectTransform.GetWorldCorners(canvasCorners);
+
+        float newX = corners[3].x > canvasCorners[3].x ? (-_tooltipObjectTransform.rect.width / 2) - 6 : (_tooltipObjectTransform.rect.width/2) + 6;
+        float newY = corners[3].y < canvasCorners[3].y ? (_tooltipObjectTransform.rect.height / 2) + 6 : (-_tooltipObjectTransform.rect.height/2) - 6;
+        _tooltipObjectTransform.anchoredPosition = pos + new Vector2(newX, newY);
+    }
+    private void OnLeftClick(InputAction.CallbackContext context)
+    {
+        HideMouseTooltip();
+    }
+
+    #endregion
+
+
     #region Other
 
+    [Space]
+    [Space]
     [Header("Other")]
-    [Space]
-    [Space]
     [SerializeField]
     private GameObject _currencyGameObject;
     [SerializeField]
@@ -140,6 +196,8 @@ public class MenuManager : MonoBehaviour
     {
         _currencyText.text = $"$:{TowerManager.Instance.Currency}";
     }
+
+
 
     [Space]
     [Space]
@@ -161,6 +219,8 @@ public class MenuManager : MonoBehaviour
         yield return new WaitForSeconds(2.5f);
         _warningWindowGameObject.SetActive(false);
     }
+
+
 
     [Space]
     [Space]
