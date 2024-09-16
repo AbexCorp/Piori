@@ -154,6 +154,8 @@ public abstract class BaseEnemy : MonoBehaviour
     
     public void GetDamaged(int damage)
     {
+        if (_currentHealth <= 0)
+            return;
         _currentHealth -= damage;
         if (_currentHealth <= 0)
             Die();
