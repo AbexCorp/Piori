@@ -24,10 +24,6 @@ public class BaseShootingTower : BaseTower
 
     protected void Awake()
     {
-        //if(_circleCollider == null)
-        //    _circleCollider = GetComponent<CircleCollider2D>();
-        //_circleCollider.isTrigger = true;
-        //_circleCollider.radius = Range;
         _obstacleLayer = LayerMask.GetMask("ObstacleFull");
         StartCoroutine(Targeting());
     }

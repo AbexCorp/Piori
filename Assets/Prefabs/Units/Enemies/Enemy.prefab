@@ -313,10 +313,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f050603d37967374bab2df9a3a3b13ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  ScriptableEnemy: {fileID: 11400000, guid: a97cde4cc52bad149a2e874d99db22a9, type: 2}
   _rigidBody: {fileID: 7465573589422607414}
+  _collider: {fileID: 1819332591011391331}
   _canvas: {fileID: 6335327219729240803}
   _healthBar: {fileID: 6963920372131385605}
-  ScriptableEnemy: {fileID: 11400000, guid: a97cde4cc52bad149a2e874d99db22a9, type: 2}
 --- !u!1 &6335327219729240803
 GameObject:
   m_ObjectHideFlags: 0

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,8 @@ public abstract class BaseEnemy : MonoBehaviour
     //Components
     [SerializeField]
     protected Rigidbody2D _rigidBody;
+    [SerializeField]
+    protected CircleCollider2D _collider;
 
     [SerializeField]
     protected GameObject _canvas;
@@ -41,7 +44,7 @@ public abstract class BaseEnemy : MonoBehaviour
     protected float _pathfindingFrequency = 0.25f;
     protected List<NavigationNode> _pathToPlayer = new();
     protected Tile _position;
-    protected Vector2 _destination;
+    protected Vector2? _destination = null;
     protected float _distanceToPlayer;
     protected bool _playerMoved = true;
     protected bool _mapChanged = true;
@@ -57,12 +60,14 @@ public abstract class BaseEnemy : MonoBehaviour
     {
         if( _rigidBody == null)
             _rigidBody = GetComponent<Rigidbody2D>();
+        if(_collider == null)
+            _collider = GetComponent<CircleCollider2D>();
+
+        _obstacleLayer = LayerMask.GetMask("ObstacleFull", "ObstacleHalf");
         GridManager.Instance.OnPlayerChangeTile += PlayerMoved;
         GridManager.Instance.OnMapChange += MapChanged;
 
         _currentHealth = Health;
-
-        //StartCoroutine(Pathfind());
     }
     protected void Start()
     {
@@ -80,6 +85,8 @@ public abstract class BaseEnemy : MonoBehaviour
 
     #region >>> Pathfinding <<<
 
+    protected int _obstacleLayer = 0;
+
     protected IEnumerator Pathfind()
     {
         YieldInstruction yield = new WaitForSeconds(_pathfindingFrequency);
@@ -89,45 +96,90 @@ public abstract class BaseEnemy : MonoBehaviour
             yield return yield;
         }
     }
+
     protected void FindPath()
     {
-        if(_distanceToPlayer <= 1)
-            _destination = PlayerController.Instance.Position;
-        else if(_distanceToPlayer > 1)
-        {
-            UpdateGridPosition();
-            if (_position == null || GridManager.Instance.PlayerTile == null)
-                return;
+        //Fix second raycast. Try to raycast to player tile or reduce the radius to stop collisions with walls touched by player
+        if (TryDirectPath())
+            return;
+        //Todo: Improve pathfinding by adding current tile to path. Right now the enemies move fine when continuing to walk on path, but get stuck
+        //on walls while cutting corners when using a new path. Cause is not including the current tile when more than half way on the corner tile. 
+        if (TryComplexPath())
+            return;
+        if (TryContinueComplexPath())
+            return;
 
-            if(_pathToPlayer == null || _pathToPlayer.Count == 0 || _playerMoved || _mapChanged)
-            {
-                _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
-                _playerMoved = false;
-                _mapChanged = false;
-            }
-            if(_pathToPlayer == null || _pathToPlayer.Count == 0)
-                return;
-
-            if (_switchedTile && Vector2.Distance(transform.position, _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition) < 0.2f) //Continue Walking
-            {
-                _pathToPlayer.Remove(_pathToPlayer.Last());
-                if (_pathToPlayer.Count == 0)
-                    return;
-                _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
-                _switchedTile = false;
-            }
-            else
-                _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
-        }
+        _destination = null;
     }
+    protected bool TryDirectPath()
+    {
+        if(_distanceToPlayer <= 1)
+        {
+            _destination = PlayerController.Instance.Position;
+            return true;
+        }
+
+        Vector2 direction = PlayerController.Instance.Position - (Vector2)gameObject.transform.position;
+        RaycastHit2D hit1 = Physics2D.Raycast(origin: gameObject.transform.position, direction: direction, layerMask: _obstacleLayer, distance: _distanceToPlayer);
+        if (hit1 == false)
+        {
+            RaycastHit2D hit2 = Physics2D.CircleCast(origin: gameObject.transform.position, radius: _collider.radius,
+                direction: direction, distance: _distanceToPlayer, layerMask: _obstacleLayer);
+            if (hit2 == false)
+            {
+                _destination = PlayerController.Instance.Position;
+                return true;
+            }
+        }
+
+        return false;
+    }
+    protected bool TryComplexPath()
+    {
+        if(_distanceToPlayer <= 1)
+            return false;
+        UpdateGridPosition();
+        if (_position == null || GridManager.Instance.PlayerTile == null)
+            return false;
+
+        bool wasSearchingforPath = false;
+        if (_pathToPlayer == null || _pathToPlayer.Count == 0 || _playerMoved || _mapChanged)
+        {
+            _pathToPlayer = Pathfinding.FindPath(_position.NavigationNode, GridManager.Instance.PlayerTile.NavigationNode);
+            _playerMoved = false;
+            _mapChanged = false;
+            wasSearchingforPath = true;
+        }
+        if (_pathToPlayer != null && _pathToPlayer.Count > 0 && wasSearchingforPath)
+        {
+            _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
+            return true;
+        }
+
+        return false;
+    }
+    protected bool TryContinueComplexPath()
+    {
+        if(_switchedTile && Vector2.Distance(transform.position, _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition) < 0.2f)
+        {
+            _pathToPlayer.Remove(_pathToPlayer.Last());
+            if (_pathToPlayer.Count == 0)
+                return false;
+            _destination = _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition;
+            _switchedTile = false;
+            return true;
+        }
+        return false;
+    }
+
     protected void Move()
     {
-        if(_pathToPlayer == null || _pathToPlayer.Count == 0 || (StopsMovingOnAttackCooldown && _attackIsOnCooldown))
+        if(_destination == null)
         {
-            _rigidBody.velocity = Vector2.zero;
+            _rigidBody.velocity += Vector2.zero;
             return;
         }
-        Vector2 direction = (_destination - (Vector2)transform.position).normalized;
+        Vector2 direction = ((Vector2)_destination - (Vector2)transform.position).normalized;
         _rigidBody.velocity = direction * Speed;
     }
 
