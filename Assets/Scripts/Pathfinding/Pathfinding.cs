@@ -28,7 +28,7 @@ public static class Pathfinding
             {
                 NavigationNode currentPathNode = end;
                 List<NavigationNode> path = new();
-                var count = 100;
+                var count = 170;
                 while (currentPathNode != start)
                 {
                     path.Add(currentPathNode);

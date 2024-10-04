@@ -119,15 +119,17 @@ public abstract class BaseEnemy : MonoBehaviour
             return true;
         }
 
-        Vector2 direction = PlayerController.Instance.Position - (Vector2)gameObject.transform.position;
-        RaycastHit2D hit1 = Physics2D.Raycast(origin: gameObject.transform.position, direction: direction, layerMask: _obstacleLayer, distance: _distanceToPlayer);
+        Vector2 direction = GridManager.Instance.PlayerTile.TileCoordinates.WorldPosition - (Vector2)gameObject.transform.position;
+        float distance = Vector2.Distance(gameObject.transform.position, GridManager.Instance.PlayerTile.TileCoordinates.WorldPosition);
+
+        RaycastHit2D hit1 = Physics2D.Raycast(origin: gameObject.transform.position, direction: direction, layerMask: _obstacleLayer, distance: distance);
         if (hit1 == false)
         {
             RaycastHit2D hit2 = Physics2D.CircleCast(origin: gameObject.transform.position, radius: _collider.radius,
-                direction: direction, distance: _distanceToPlayer, layerMask: _obstacleLayer);
+                direction: direction, distance: distance, layerMask: _obstacleLayer);
             if (hit2 == false)
             {
-                _destination = PlayerController.Instance.Position;
+                _destination = GridManager.Instance.PlayerTile.TileCoordinates.WorldPosition;
                 return true;
             }
         }
@@ -160,6 +162,8 @@ public abstract class BaseEnemy : MonoBehaviour
     }
     protected bool TryContinueComplexPath()
     {
+        if(_pathToPlayer == null)
+            return false;
         if(_switchedTile && Vector2.Distance(transform.position, _pathToPlayer.Last().Tile.TileCoordinates.WorldPosition) < 0.2f)
         {
             _pathToPlayer.Remove(_pathToPlayer.Last());
@@ -252,6 +256,7 @@ public abstract class BaseEnemy : MonoBehaviour
     #endregion
 
 
+    #if UNITY_EDITOR
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.white;
@@ -266,4 +271,5 @@ public abstract class BaseEnemy : MonoBehaviour
             Handles.DrawBezier(p1, p2, p1, p2, Color.red, null, thickness);
         }
     }
+    #endif
 }
