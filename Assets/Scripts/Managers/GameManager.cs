@@ -50,6 +50,7 @@ public class GameManager : MonoBehaviour
         MenuManager.Instance.ShowWarning("You Lose");
         Debug.LogWarning("Lost game");
         Debug.Break();
+        Time.timeScale = 0;
     }
 }
 

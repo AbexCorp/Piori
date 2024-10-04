@@ -196,8 +196,8 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
             _spriteRenderer.sprite = _bottomCenter;
 
         //add others here
-        else
-            _spriteRenderer.color = Color.red;
+        //else
+            //_spriteRenderer.color = Color.red;
         if (_spriteRenderer.sprite == null)
             _spriteRenderer.sprite = _middleCenter;
 
@@ -243,9 +243,15 @@ public abstract class Tile : MonoBehaviour, IMouseInteractions
         }
         else if(TowerManager.Instance.SelectedTowerPrefabToBuy != null) //Building
         {
-            if (OccuppyingTower != null || !IsBuildable)
+
+            if (OccuppyingTower != null || (!IsBuildable && GridManager.Instance.IsBorderTile(this) == false))
                 return;
 
+            if(GridManager.Instance.IsBorderTile(this))
+            {
+                MenuManager.Instance.ShowWarning("Cannot build on map borders");
+                return;
+            }
             if(BuildingHereCreatesEnclosedArea())
             {
                 //Debug.LogWarning("Cannot create enclosed spaces");
